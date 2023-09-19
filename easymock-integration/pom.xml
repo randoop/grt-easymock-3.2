@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.easymock</groupId>
+    <artifactId>easymock-parent</artifactId>
+    <version>3.2</version>
+  </parent>
+
+  <artifactId>easymock-integration</artifactId>
+  <packaging>jar</packaging>
+  <name>EasyMock Integration</name>
+  <description>EasyMock Integration is a test project making sure EasyMock is correctly packaged and OSGi compliant</description>
+  <inceptionYear>2009</inceptionYear>
+  <organization>
+    <name>Henri Tremblay</name>
+  </organization>
+
+  <developers>
+    <developer>
+      <id>henri</id>
+      <name>Henri Tremblay</name>
+      <url>http://henritremblay.blogspot.fr/</url>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <properties>
+    <!-- These versions are also used to filter boot-bundles.properties -->
+    <log4j.version>1.2.16</log4j.version>
+    <spring.osgi.version>1.2.1</spring.osgi.version>
+    <slf4j.version>1.6.1</slf4j.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Lower the javassist version because 3.17.1-GA is compiled for JDK6 -->
+      <dependency>
+        <groupId>org.javassist</groupId>
+        <artifactId>javassist</artifactId>
+        <version>3.16.1-GA</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>cglib</groupId>
+          <artifactId>cglib-nodep</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymockclassextension</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.osgi</groupId>
+      <artifactId>spring-osgi-test</artifactId>
+      <version>${spring.osgi.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.osgi</groupId>
+      <artifactId>spring-osgi-annotation</artifactId>
+      <version>${spring.osgi.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.osgi</groupId>
+      <artifactId>spring-osgi-extender</artifactId>
+      <version>${spring.osgi.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Osgi bundle for cglib -->
+    <dependency>
+      <groupId>net.sourceforge.cglib</groupId>
+      <artifactId>com.springsource.net.sf.cglib</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+
+    <!-- These are just to have a nice logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>com.springsource.slf4j.api</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>com.springsource.slf4j.log4j</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>com.springsource.org.apache.log4j</artifactId>
+          <groupId>org.apache.log4j</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.log4j</groupId>
+      <artifactId>com.springsource.org.apache.log4j</artifactId>
+      <version>${log4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+
+    <!-- And this is our equinox implementation -->
+    <dependency>
+      <groupId>org.eclipse.osgi</groupId>
+      <artifactId>org.eclipse.osgi</artifactId>
+      <version>3.7.1.R37x_v20110808-1106</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- To make sure we are still compatible with powermock -->
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-easymock</artifactId>
+      <version>1.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>1.5</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.atlassian.maven.plugins</groupId>
+        <artifactId>maven-clover2-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <repositories>
+    <repository>
+      <id>com.springsource.repository.bundles.external</id>
+      <name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+      <url>http://repository.springsource.com/maven/bundles/external</url>
+    </repository>
+  </repositories>
+  <profiles>
+    <profile>
+      <id>fullBuild</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.mycila.maven-license-plugin</groupId>
+            <artifactId>maven-license-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

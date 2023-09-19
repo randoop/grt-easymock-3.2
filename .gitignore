@@ -1,0 +1,11 @@
+.svn
+clover.license
+.project
+.classpath
+.settings
+target
+/easymock-integration/eclipse_config
+*.patch
+.idea/
+*.iml
+sys$command
