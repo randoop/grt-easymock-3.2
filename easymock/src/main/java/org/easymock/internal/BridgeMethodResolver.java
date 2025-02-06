@@ -67,7 +67,8 @@ public final class BridgeMethodResolver {
      *             if no bridged {@link Method} can be found
      */
     public static Method findBridgedMethod(final Method bridgeMethod) {
-        assert bridgeMethod != null : "Method must not be null";
+        // Assertions don't work with EvoSuite + Major
+        // assert bridgeMethod != null : "Method must not be null";
 
         if (!bridgeMethod.isBridge()) {
             return bridgeMethod;
@@ -373,7 +374,8 @@ public final class BridgeMethodResolver {
      * @return all interfaces that the given object implements as array
      */
     private static Class<?>[] getAllInterfacesForClass(Class<?> clazz) {
-        assert clazz != null : "Class must not be null";
+        // Assertions don't work with EvoSuite + Major
+        // assert clazz != null : "Class must not be null";
         if (clazz.isInterface()) {
             return new Class[] { clazz };
         }
@@ -406,8 +408,9 @@ public final class BridgeMethodResolver {
      * @return the Method object, or <code>null</code> if none found
      */
     private static Method findMethod(final Class<?> clazz, final String name, final Class<?>[] paramTypes) {
-        assert clazz != null : "Class must not be null";
-        assert name != null : "Method name must not be null";
+        // Assertions don't work with EvoSuite + Major
+        // assert clazz != null : "Class must not be null";
+        // assert name != null : "Method name must not be null";
         Class<?> searchType = clazz;
         while (!Object.class.equals(searchType) && searchType != null) {
             final Method[] methods = (searchType.isInterface() ? searchType.getMethods() : searchType
