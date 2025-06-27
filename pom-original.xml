@@ -42,10 +42,7 @@
     </mailingList>
   </mailingLists>
   <properties>
-    <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
-    <grt-testing.basedir>${grt-testing.basedir}</grt-testing.basedir>
-    <grt-testing.major.jar>build/major/lib/major.jar</grt-testing.major.jar>
-    <grt-testing.plugin>${grt-testing.plugin}</grt-testing.plugin>
+    <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>  
   </properties>
   <scm>
     <url>https://github.com/easymock/easymock</url>
@@ -66,13 +63,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>major</groupId>
-      <artifactId>major</artifactId>
-      <version>2.2.0</version>
-      <scope>system</scope>
-      <systemPath>${grt-testing.basedir}/${grt-testing.major.jar}</systemPath>
     </dependency>
   </dependencies>
   <build>
@@ -304,10 +294,6 @@
         <configuration>
           <source>1.5</source>
           <target>1.5</target>
-          <testExcludes>
-            <exclude>**/*</exclude>
-          </testExcludes>
-          <compilerArgument>${grt-testing.plugin}</compilerArgument>
         </configuration>
       </plugin>
       <plugin>
