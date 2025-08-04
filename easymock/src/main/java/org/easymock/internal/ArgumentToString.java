@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.lang.reflect.Array;
 
 /**
@@ -25,11 +27,13 @@ import java.lang.reflect.Array;
 public final class ArgumentToString {
 
     // ///CLOVER:OFF
+    @SideEffectFree
     private ArgumentToString() {
     }
 
     // ///CLOVER:ON
 
+    @Impure
     public static void appendArgument(final Object value, final StringBuffer buffer) {
         if (value == null) {
             buffer.append("null");
@@ -63,6 +67,7 @@ public final class ArgumentToString {
      *            the argument to convert to a String.
      * @return a <code>String</code> representation of the argument.
      */
+    @Impure
     public static String argumentToString(final Object argument) {
         final StringBuffer result = new StringBuffer();
         ArgumentToString.appendArgument(argument, result);
@@ -79,6 +84,7 @@ public final class ArgumentToString {
      *            the arguments to be used in the string representation.
      * @return a string representation of the matcher.
      */
+    @Impure
     public static String argumentsToString(Object... arguments) {
         if (arguments == null) {
             arguments = new Object[0];

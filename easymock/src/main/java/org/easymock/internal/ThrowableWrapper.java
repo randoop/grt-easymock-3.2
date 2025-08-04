@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.easymock.internal;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 
 /**
  * @author OFFIS, Tammo Freese
@@ -24,10 +26,12 @@ public class ThrowableWrapper extends Throwable {
 
     private final Throwable throwable;
 
+    @SideEffectFree
     public ThrowableWrapper(final Throwable throwable) {
         this.throwable = throwable;
     }
 
+    @Pure
     public Throwable getThrowable() {
         return throwable;
     }

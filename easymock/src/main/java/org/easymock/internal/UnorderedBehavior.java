@@ -15,6 +15,9 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +33,12 @@ public class UnorderedBehavior implements Serializable {
 
     private final boolean checkOrder;
 
+    @SideEffectFree
     public UnorderedBehavior(final boolean checkOrder) {
         this.checkOrder = checkOrder;
     }
 
+    @Impure
     public void addExpected(final ExpectedInvocation expected, final Result result, final Range count) {
         for (final ExpectedInvocationAndResults entry : results) {
             if (entry.getExpectedInvocation().equals(expected)) {
@@ -46,6 +51,7 @@ public class UnorderedBehavior implements Serializable {
         results.add(new ExpectedInvocationAndResults(expected, list));
     }
 
+    @Impure
     public Result addActual(final Invocation actual) {
         for (final ExpectedInvocationAndResults entry : results) {
             try {
@@ -70,6 +76,8 @@ public class UnorderedBehavior implements Serializable {
         return null;
     }
 
+    @SideEffectFree
+    @Impure
     public boolean verify() {
         for (final ExpectedInvocationAndResults entry : results) {
             if (!entry.getResults().hasValidCallCount()) {
@@ -79,6 +87,7 @@ public class UnorderedBehavior implements Serializable {
         return true;
     }
 
+    @Impure
     public List<ErrorMessage> getMessages(final Invocation invocation) {
         final List<ErrorMessage> messages = new ArrayList<ErrorMessage>(results.size());
         for (final ExpectedInvocationAndResults entry : results) {
@@ -98,6 +107,8 @@ public class UnorderedBehavior implements Serializable {
 
     }
 
+    @Pure
+    @Impure
     public boolean allowsExpectedInvocation(final ExpectedInvocation expected, final boolean checkOrder) {
         if (this.checkOrder != checkOrder) {
             return false;

@@ -15,6 +15,9 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -28,10 +31,12 @@ public final class MockInvocationHandler implements InvocationHandler, Serializa
 
     private final MocksControl control;
 
+    @SideEffectFree
     public MockInvocationHandler(final MocksControl control) {
         this.control = control;
     }
 
+    @Impure
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         try {
             if (control.getState() instanceof RecordState) {
@@ -48,6 +53,7 @@ public final class MockInvocationHandler implements InvocationHandler, Serializa
         // then let all unwrapped exceptions pass unmodified
     }
 
+    @Pure
     public MocksControl getControl() {
         return control;
     }

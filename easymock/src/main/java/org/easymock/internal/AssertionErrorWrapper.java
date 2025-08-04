@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.easymock.internal;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 
 /**
  * @author OFFIS, Tammo Freese
@@ -24,10 +26,12 @@ public class AssertionErrorWrapper extends RuntimeException {
 
     private final AssertionError error;
 
+    @SideEffectFree
     public AssertionErrorWrapper(final AssertionError error) {
         this.error = error;
     }
 
+    @Pure
     public AssertionError getAssertionError() {
         return error;
     }

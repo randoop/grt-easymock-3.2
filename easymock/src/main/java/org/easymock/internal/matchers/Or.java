@@ -15,6 +15,8 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
@@ -30,10 +32,12 @@ public class Or implements IArgumentMatcher, Serializable {
 
     private final List<IArgumentMatcher> matchers;
 
+    @SideEffectFree
     public Or(final List<IArgumentMatcher> matchers) {
         this.matchers = matchers;
     }
 
+    @Impure
     public boolean matches(final Object actual) {
         for (final IArgumentMatcher matcher : matchers) {
             if (matcher.matches(actual)) {
@@ -43,6 +47,7 @@ public class Or implements IArgumentMatcher, Serializable {
         return false;
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("or(");
         for (final Iterator<IArgumentMatcher> it = matchers.iterator(); it.hasNext();) {

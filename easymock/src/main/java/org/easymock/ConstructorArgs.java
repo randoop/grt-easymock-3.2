@@ -15,6 +15,9 @@
  */
 package org.easymock;
 
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Impure;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
@@ -36,6 +39,7 @@ public class ConstructorArgs {
      * @param initArgs
      *            Arguments passed to the constructor
      */
+    @Impure
     public ConstructorArgs(final Constructor<?> constructor, final Object... initArgs) {
         this.constructor = constructor;
         this.initArgs = initArgs;
@@ -43,6 +47,7 @@ public class ConstructorArgs {
         validateArgs();
     }
 
+    @Impure
     private void validateArgs() {
 
         final Class<?>[] paramTypes = constructor.getParameterTypes();
@@ -83,6 +88,7 @@ public class ConstructorArgs {
         }
     }
 
+    @SideEffectFree
     private IllegalArgumentException throwException(final Class<?> paramType, final Object arg) {
         return new IllegalArgumentException(arg + " isn't of type " + paramType);
     }
@@ -90,6 +96,7 @@ public class ConstructorArgs {
     /**
      * @return arguments to be passed to the constructor
      */
+    @Pure
     public Object[] getInitArgs() {
         return initArgs;
     }
@@ -97,6 +104,7 @@ public class ConstructorArgs {
     /**
      * @return constructor to be called
      */
+    @Pure
     public Constructor<?> getConstructor() {
         return constructor;
     }

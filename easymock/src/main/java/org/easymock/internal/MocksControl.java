@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -50,6 +52,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
 
         public org.easymock.MockType realType;
 
+        @Impure
         MockType(final org.easymock.MockType realType) {
             this.realType = realType;
         }
@@ -57,48 +60,58 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
 
     private org.easymock.MockType type;
 
+    @Impure
     public MocksControl(final org.easymock.MockType type) {
         this.type = type;
         reset();
     }
 
+    @Impure
     public MocksControl(final MockType type) {
         this.type = type.realType;
         reset();
     }
 
+    @Pure
     public org.easymock.MockType getType() {
         return type;
     }
 
+    @Pure
     public IMocksControlState getState() {
         return state;
     }
 
+    @Impure
     public <T> T createMock(final Class<T> toMock) {
         return createMock(null, toMock, (Method[]) null);
     }
 
+    @Impure
     public <T> T createMock(final String name, final Class<T> toMock) {
         return createMock(name, toMock, (Method[]) null);
     }
 
+    @Impure
     @Deprecated
     public <T> T createMock(final String name, final Class<T> toMock, final Method... mockedMethods) {
         return createMock(name, toMock, null, mockedMethods);
     }
 
+    @Impure
     @Deprecated
     public <T> T createMock(final Class<T> toMock, final Method... mockedMethods) {
         return createMock(null, toMock, null, mockedMethods);
     }
 
+    @Impure
     @Deprecated
     public <T> T createMock(final Class<T> toMock, final ConstructorArgs constructorArgs,
             final Method... mockedMethods) {
         return createMock(null, toMock, constructorArgs, mockedMethods);
     }
 
+    @Impure
     @Deprecated
     public <T> T createMock(final String name, final Class<T> toMock, final ConstructorArgs constructorArgs,
             final Method... mockedMethods) {
@@ -118,12 +131,14 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public static IProxyFactory getProxyFactory(final Object o) {
         return Proxy.isProxyClass(o.getClass())
                 ? new JavaProxyFactory()
                 : getClassProxyFactory();
     }
 
+    @Impure
     private static IProxyFactory getClassProxyFactory() {
         final String classMockingDisabled = EasyMockProperties.getInstance().getProperty(
                 EasyMock.DISABLE_CLASS_MOCKING);
@@ -151,6 +166,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public static MocksControl getControl(final Object mock) {
         try {
             final IProxyFactory factory = getProxyFactory(mock);
@@ -161,6 +177,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public static InvocationHandler getInvocationHandler(final Object mock) {
         return getClassProxyFactory().getInvocationHandler(mock);
     }
@@ -177,6 +194,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
      *            Mock object
      * @return the mocked class or interface
      */
+    @Impure
     @SuppressWarnings("unchecked")
     public static <T, V extends T> Class<T> getMockedType(final V proxy) {
         if (Proxy.isProxyClass(proxy.getClass())) {
@@ -185,6 +203,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         return (Class<T>) proxy.getClass().getSuperclass();
     }
 
+    @Impure
     public final void reset() {
         behavior = new MocksBehavior(type == org.easymock.MockType.NICE);
         behavior.checkOrder(type == org.easymock.MockType.STRICT);
@@ -192,21 +211,25 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         LastControl.reportLastControl(null);
     }
 
+    @Impure
     public void resetToNice() {
         type = org.easymock.MockType.NICE;
         reset();
     }
 
+    @Impure
     public void resetToDefault() {
         type = org.easymock.MockType.DEFAULT;
         reset();
     }
 
+    @Impure
     public void resetToStrict() {
         type = org.easymock.MockType.STRICT;
         reset();
     }
 
+    @Impure
     public void replay() {
         try {
             state.replay();
@@ -217,6 +240,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public void verify() {
         try {
             state.verify();
@@ -227,6 +251,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public void checkOrder(final boolean value) {
         try {
             state.checkOrder(value);
@@ -235,6 +260,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public void makeThreadSafe(final boolean threadSafe) {
         try {
             state.makeThreadSafe(threadSafe);
@@ -243,6 +269,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public void checkIsUsedInOneThread(final boolean shouldBeUsedInOneThread) {
         try {
             state.checkIsUsedInOneThread(shouldBeUsedInOneThread);
@@ -253,6 +280,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
 
     // methods from IBehaviorSetters
 
+    @Impure
     public IExpectationSetters<Object> andReturn(final Object value) {
         try {
             state.andReturn(value);
@@ -262,6 +290,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public IExpectationSetters<Object> andThrow(final Throwable throwable) {
         try {
             state.andThrow(throwable);
@@ -271,6 +300,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public IExpectationSetters<Object> andAnswer(final IAnswer<? extends Object> answer) {
         try {
             state.andAnswer(answer);
@@ -280,6 +310,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public IExpectationSetters<Object> andDelegateTo(final Object answer) {
         try {
             state.andDelegateTo(answer);
@@ -289,6 +320,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public void andStubReturn(final Object value) {
         try {
             state.andStubReturn(value);
@@ -297,6 +329,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public void andStubThrow(final Throwable throwable) {
         try {
             state.andStubThrow(throwable);
@@ -305,6 +338,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public void andStubAnswer(final IAnswer<? extends Object> answer) {
         try {
             state.andStubAnswer(answer);
@@ -313,6 +347,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public void andStubDelegateTo(final Object delegateTo) {
         try {
             state.andStubDelegateTo(delegateTo);
@@ -321,6 +356,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public void asStub() {
         try {
             state.asStub();
@@ -329,6 +365,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public IExpectationSetters<Object> times(final int times) {
         try {
             state.times(new Range(times));
@@ -338,6 +375,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public IExpectationSetters<Object> times(final int min, final int max) {
         try {
             state.times(new Range(min, max));
@@ -347,6 +385,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public IExpectationSetters<Object> once() {
         try {
             state.times(ONCE);
@@ -356,6 +395,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public IExpectationSetters<Object> atLeastOnce() {
         try {
             state.times(AT_LEAST_ONCE);
@@ -365,6 +405,7 @@ public class MocksControl implements IMocksControl, IExpectationSetters<Object>,
         }
     }
 
+    @Impure
     public IExpectationSetters<Object> anyTimes() {
         try {
             state.times(ZERO_OR_MORE);

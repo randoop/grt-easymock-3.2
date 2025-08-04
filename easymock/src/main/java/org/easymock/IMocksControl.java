@@ -15,6 +15,7 @@
  */
 package org.easymock;
 
+import org.checkerframework.dataflow.qual.Impure;
 import java.lang.reflect.Method;
 
 /**
@@ -36,6 +37,7 @@ public interface IMocksControl {
      *            implement/extend.
      * @return the mock object.
      */
+    @Impure
     <T> T createMock(Class<T> toMock);
 
     /**
@@ -53,6 +55,7 @@ public interface IMocksControl {
      * @throws IllegalArgumentException
      *             if the name is not a valid Java identifier.
      */
+    @Impure
     <T> T createMock(String name, Class<T> toMock);
 
     /**
@@ -69,6 +72,7 @@ public interface IMocksControl {
      * 
      * @deprecated Use {@link EasyMock#createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     <T> T createMock(Class<T> toMock, Method... mockedMethods);
 
@@ -88,6 +92,7 @@ public interface IMocksControl {
      * 
      * @deprecated Use {@link EasyMock#createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     <T> T createMock(Class<T> toMock, ConstructorArgs constructorArgs, Method... mockedMethods);
 
@@ -107,6 +112,7 @@ public interface IMocksControl {
      * 
      * @deprecated Use {@link EasyMock#createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     <T> T createMock(String name, Class<T> toMock, Method... mockedMethods);
 
@@ -128,40 +134,47 @@ public interface IMocksControl {
      * 
      * @deprecated Use {@link EasyMock#createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     <T> T createMock(String name, Class<T> toMock, ConstructorArgs constructorArgs, Method... mockedMethods);
 
     /**
      * Removes all expectations for the mock objects of this control.
      */
+    @Impure
     void reset();
 
     /**
      * Removes all expectations for the mock objects of this control and turn
      * them to nice mocks.
      */
+    @Impure
     void resetToNice();
 
     /**
      * Removes all expectations for the mock objects of this control and turn
      * them to default mocks.
      */
+    @Impure
     void resetToDefault();
 
     /**
      * Removes all expectations for the mock objects of this control and turn
      * them to strict mocks.
      */
+    @Impure
     void resetToStrict();
 
     /**
      * Switches the control from record mode to replay mode.
      */
+    @Impure
     void replay();
 
     /**
      * Verifies that all expectations were met.
      */
+    @Impure
     void verify();
 
     /**
@@ -171,6 +184,7 @@ public interface IMocksControl {
      *            <code>true</code> switches order checking on,
      *            <code>false</code> switches it off.
      */
+    @Impure
     void checkOrder(boolean state);
 
     /**
@@ -179,6 +193,7 @@ public interface IMocksControl {
      * @param threadSafe
      *            If the mock should be thread safe or not
      */
+    @Impure
     void makeThreadSafe(boolean threadSafe);
 
     /**
@@ -187,5 +202,6 @@ public interface IMocksControl {
      * @param shouldBeUsedInOneThread
      *            If it should be used in one thread only or not
      */
+    @Impure
     void checkIsUsedInOneThread(boolean shouldBeUsedInOneThread);
 }

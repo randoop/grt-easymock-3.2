@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -33,6 +35,7 @@ import com.google.dexmaker.stock.ProxyBuilder;
  * Mocks concrete classes for Android's runtime by generating dex files.
  */
 public final class AndroidClassProxyFactory implements IProxyFactory {
+    @Impure
     public <T> T createProxy(Class<T> toMock, InvocationHandler handler,
             Method[] mockedMethods, ConstructorArgs constructorArgs) {
         final MockHandler interceptor = new MockHandler(handler, mockedMethods);
@@ -59,6 +62,7 @@ public final class AndroidClassProxyFactory implements IProxyFactory {
         }
     }
 
+    @Impure
     public InvocationHandler getInvocationHandler(Object mock) {
         MockHandler mockHandler = (MockHandler) ProxyBuilder.getInvocationHandler(mock);
         return mockHandler.delegate;
@@ -68,6 +72,7 @@ public final class AndroidClassProxyFactory implements IProxyFactory {
         private final InvocationHandler delegate;
         private final Set<Method> mockedMethods;
 
+        @Impure
         public MockHandler(InvocationHandler delegate, Method... mockedMethods) {
             this.delegate = delegate;
             this.mockedMethods = (mockedMethods != null)
@@ -75,6 +80,7 @@ public final class AndroidClassProxyFactory implements IProxyFactory {
                     : null;
         }
 
+        @Impure
         public Object invoke(Object obj, Method method, Object[] args) throws Throwable {
             if (method.isBridge()) {
                 method = BridgeMethodResolver.findBridgedMethod(method);
@@ -93,6 +99,7 @@ public final class AndroidClassProxyFactory implements IProxyFactory {
             return delegate.invoke(obj, method, args);
         }
 
+        @Pure
         private boolean isMocked(Method method) {
             return mockedMethods != null && !mockedMethods.contains(method);
         }

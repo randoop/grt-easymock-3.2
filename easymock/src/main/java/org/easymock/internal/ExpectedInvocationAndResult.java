@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 /**
@@ -28,15 +30,18 @@ public class ExpectedInvocationAndResult implements Serializable {
 
     private final Result result;
 
+    @SideEffectFree
     public ExpectedInvocationAndResult(final ExpectedInvocation expectedInvocation, final Result result) {
         this.expectedInvocation = expectedInvocation;
         this.result = result;
     }
 
+    @Pure
     public ExpectedInvocation getExpectedInvocation() {
         return expectedInvocation;
     }
 
+    @Pure
     public Result getResult() {
         return result;
     }

@@ -15,6 +15,9 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -32,20 +35,24 @@ public final class Result implements IAnswer<Object>, Serializable {
 
     private final boolean shouldFillInStackTrace;
 
+    @SideEffectFree
     private Result(final IAnswer<?> value, final boolean shouldFillInStackTrace) {
         this.value = value;
         this.shouldFillInStackTrace = shouldFillInStackTrace;
     }
 
+    @Impure
     public static Result createThrowResult(final Throwable throwable) {
         class ThrowingAnswer implements IAnswer<Object>, Serializable {
 
             private static final long serialVersionUID = -332797751209289222L;
 
+            @Pure
             public Object answer() throws Throwable {
                 throw throwable;
             }
 
+            @Pure
             @Override
             public String toString() {
                 return "Answer throwing " + throwable;
@@ -54,15 +61,18 @@ public final class Result implements IAnswer<Object>, Serializable {
         return new Result(new ThrowingAnswer(), true);
     }
 
+    @Impure
     public static Result createReturnResult(final Object value) {
         class ReturningAnswer implements IAnswer<Object>, Serializable {
 
             private static final long serialVersionUID = 6973893913593916866L;
 
+            @Pure
             public Object answer() throws Throwable {
                 return value;
             }
 
+            @Pure
             @Override
             public String toString() {
                 return "Answer returning " + value;
@@ -71,11 +81,13 @@ public final class Result implements IAnswer<Object>, Serializable {
         return new Result(new ReturningAnswer(), true);
     }
 
+    @Impure
     public static Result createDelegatingResult(final Object value) {
         class DelegatingAnswer implements IAnswer<Object>, Serializable {
 
             private static final long serialVersionUID = -5699326678580460103L;
 
+            @Impure
             public Object answer() throws Throwable {
                 final Invocation invocation = LastControl.getCurrentInvocation();
                 try {
@@ -90,6 +102,7 @@ public final class Result implements IAnswer<Object>, Serializable {
                 }
             }
 
+            @Pure
             @Override
             public String toString() {
                 return "Delegated to " + value;
@@ -98,18 +111,23 @@ public final class Result implements IAnswer<Object>, Serializable {
         return new Result(new DelegatingAnswer(), false);
     }
 
+    @SideEffectFree
+    @Impure
     public static Result createAnswerResult(final IAnswer<?> answer) {
         return new Result(answer, false);
     }
 
+    @Impure
     public Object answer() throws Throwable {
         return value.answer();
     }
 
+    @Pure
     public boolean shouldFillInStackTrace() {
         return shouldFillInStackTrace;
     }
 
+    @SideEffectFree
     @Override
     public String toString() {
         return value.toString();

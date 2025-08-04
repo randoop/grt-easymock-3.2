@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.lang.reflect.*;
 import java.util.*;
 
@@ -49,6 +51,7 @@ public final class BridgeMethodResolver {
     // So, don't check coverage over the class
 
     // ///CLOVER:OFF
+    @SideEffectFree
     private BridgeMethodResolver() {
     }
 
@@ -66,6 +69,7 @@ public final class BridgeMethodResolver {
      * @throws IllegalStateException
      *             if no bridged {@link Method} can be found
      */
+    @Impure
     public static Method findBridgedMethod(final Method bridgeMethod) {
         // Assertions don't work with EvoSuite + Major
         // assert bridgeMethod != null : "Method must not be null";
@@ -108,6 +112,7 @@ public final class BridgeMethodResolver {
      *            the bridge method
      * @return the bridged method, or <code>null</code> if none found
      */
+    @Impure
     private static Method searchCandidates(final List<Method> candidateMethods, final Method bridgeMethod) {
         final Map<TypeVariable<?>, Type> typeParameterMap = createTypeVariableMap(bridgeMethod
                 .getDeclaringClass());
@@ -127,6 +132,7 @@ public final class BridgeMethodResolver {
      * Method}. This method performs inexpensive checks and can be used quickly
      * filter for a set of possible matches.
      */
+    @Impure
     private static boolean isBridgedCandidateFor(final Method candidateMethod, final Method bridgeMethod) {
         return (!candidateMethod.isBridge() && !candidateMethod.equals(bridgeMethod)
                 && candidateMethod.getName().equals(bridgeMethod.getName()) && candidateMethod
@@ -137,6 +143,7 @@ public final class BridgeMethodResolver {
      * Determine whether or not the bridge {@link Method} is the bridge for the
      * supplied candidate {@link Method}.
      */
+    @Impure
     private static boolean isBridgeMethodFor(final Method bridgeMethod, final Method candidateMethod,
             final Map<TypeVariable<?>, Type> typeVariableMap) {
         if (isResolvedTypeMatch(candidateMethod, bridgeMethod, typeVariableMap)) {
@@ -153,6 +160,7 @@ public final class BridgeMethodResolver {
      * @throws IllegalStateException
      *             if the generic declaration cannot be found
      */
+    @Impure
     private static Method findGenericDeclaration(final Method bridgeMethod) {
         // Search parent types for method that has same signature as bridge.
         Class<?> superclass = bridgeMethod.getDeclaringClass().getSuperclass();
@@ -184,6 +192,7 @@ public final class BridgeMethodResolver {
      * {@link #createTypeVariableMap TypeVariable Map}, otherwise returns
      * <code>false</code>.
      */
+    @Impure
     private static boolean isResolvedTypeMatch(final Method genericMethod, final Method candidateMethod,
             final Map<TypeVariable<?>, Type> typeVariableMap) {
         final Type[] genericParameters = genericMethod.getGenericParameterTypes();
@@ -217,6 +226,7 @@ public final class BridgeMethodResolver {
     /**
      * Determine the raw type for the given generic parameter type.
      */
+    @Impure
     private static Type getRawType(final Type genericType, final Map<TypeVariable<?>, Type> typeVariableMap) {
         if (genericType instanceof TypeVariable<?>) {
             final TypeVariable<?> tv = (TypeVariable<?>) genericType;
@@ -234,6 +244,7 @@ public final class BridgeMethodResolver {
      * signature matches that of the supplied {@link Method}, then this matching
      * {@link Method} is returned, otherwise <code>null</code> is returned.
      */
+    @Impure
     private static Method searchForMatch(final Class<?> type, final Method bridgeMethod) {
         return findMethod(type, bridgeMethod.getName(), bridgeMethod.getParameterTypes());
     }
@@ -243,6 +254,7 @@ public final class BridgeMethodResolver {
      * concrete {@link Class} for the specified {@link Class}. Searches all
      * super types, enclosing types and interfaces.
      */
+    @Impure
     private static Map<TypeVariable<?>, Type> createTypeVariableMap(final Class<?> cls) {
         final Map<TypeVariable<?>, Type> typeVariableMap = new HashMap<TypeVariable<?>, Type>();
 
@@ -276,6 +288,7 @@ public final class BridgeMethodResolver {
         return typeVariableMap;
     }
 
+    @Impure
     private static void extractTypeVariablesFromGenericInterfaces(final Type[] genericInterfaces,
             final Map<TypeVariable<?>, Type> typeVariableMap) {
         for (final Type genericInterface : genericInterfaces) {
@@ -314,6 +327,7 @@ public final class BridgeMethodResolver {
      * For '<code>FooImpl</code>' the following mappings would be added to the
      * {@link Map}: {S=java.lang.String, T=java.lang.Integer}.
      */
+    @Impure
     private static void populateTypeMapFromParameterizedType(final ParameterizedType type,
             final Map<TypeVariable<?>, Type> typeVariableMap) {
         if (type.getRawType() instanceof Class<?>) {
@@ -347,6 +361,7 @@ public final class BridgeMethodResolver {
     /**
      * Extracts the bound '<code>Class</code>' for a give {@link TypeVariable}.
      */
+    @Impure
     private static Class<?> extractClassForTypeVariable(final TypeVariable<?> typeVariable) {
         final Type[] bounds = typeVariable.getBounds();
         Type result = null;
@@ -373,6 +388,7 @@ public final class BridgeMethodResolver {
      *            the class to analyse for interfaces
      * @return all interfaces that the given object implements as array
      */
+    @Impure
     private static Class<?>[] getAllInterfacesForClass(Class<?> clazz) {
         // Assertions don't work with EvoSuite + Major
         // assert clazz != null : "Class must not be null";
@@ -407,6 +423,7 @@ public final class BridgeMethodResolver {
      *            the parameter types of the method
      * @return the Method object, or <code>null</code> if none found
      */
+    @Impure
     private static Method findMethod(final Class<?> clazz, final String name, final Class<?>[] paramTypes) {
         // Assertions don't work with EvoSuite + Major
         // assert clazz != null : "Class must not be null";
@@ -429,6 +446,7 @@ public final class BridgeMethodResolver {
      * Get all declared methods on the leaf class and all superclasses. Leaf
      * class methods are included first.
      */
+    @Impure
     private static Method[] getAllDeclaredMethods(Class<?> leafClass) {
         final List<Method> list = new LinkedList<Method>();
 

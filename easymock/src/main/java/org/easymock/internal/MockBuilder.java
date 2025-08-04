@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Impure;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -46,6 +48,8 @@ public class MockBuilder<T> implements IMockBuilder<T> {
 
     private final EasyMockSupport support;
 
+    @SideEffectFree
+    @Impure
     public MockBuilder(final Class<T> toMock) {
         this(toMock, null);
     }
@@ -59,11 +63,13 @@ public class MockBuilder<T> implements IMockBuilder<T> {
      * @param support
      *            The EasyMockSupport used to create mocks. Null if none
      */
+    @SideEffectFree
     public MockBuilder(final Class<T> toMock, final EasyMockSupport support) {
         this.toMock = toMock;
         this.support = support;
     }
 
+    @Impure
     public IMockBuilder<T> addMockedMethod(final Method method) {
         if (Modifier.isFinal(method.getModifiers())) {
             throw new IllegalArgumentException("Final methods can't be mocked");
@@ -75,6 +81,7 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     public IMockBuilder<T> addMockedMethod(final String methodName) {
         final Method m = ReflectionUtils.findMethod(toMock, methodName);
         if (m == null) {
@@ -84,6 +91,7 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     public IMockBuilder<T> addMockedMethod(final String methodName, final Class<?>... parameterTypes) {
         final Method m = ReflectionUtils.findMethod(toMock, methodName, parameterTypes);
         if (m == null) {
@@ -93,6 +101,7 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     public IMockBuilder<T> addMockedMethods(final String... methodNames) {
         for (final String methodName : methodNames) {
             addMockedMethod(methodName);
@@ -100,6 +109,7 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     public IMockBuilder<T> addMockedMethods(final Method... methods) {
         for (final Method method : methods) {
             addMockedMethod(method);
@@ -107,6 +117,7 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     @SuppressWarnings("unchecked")
     public IMockBuilder<T> withConstructor(final Constructor<?> constructor) {
         checkConstructorNotInitialized();
@@ -114,6 +125,7 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     @SuppressWarnings("unchecked")
     public IMockBuilder<T> withConstructor(final ConstructorArgs constructorArgs) {
         checkConstructorNotInitialized();
@@ -122,6 +134,7 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     public IMockBuilder<T> withConstructor() {
         checkConstructorNotInitialized();
         try {
@@ -133,6 +146,7 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     public IMockBuilder<T> withConstructor(final Object... initArgs) {
         checkConstructorNotInitialized();
         try {
@@ -144,6 +158,7 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     public IMockBuilder<T> withConstructor(final Class<?>... argTypes) {
         checkConstructorNotInitialized();
 
@@ -155,6 +170,7 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     public IMockBuilder<T> withArgs(final Object... initArgs) {
         if (constructor == null) {
             throw new IllegalStateException(
@@ -168,34 +184,41 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return this;
     }
 
+    @Impure
     public T createMock(final MockType type) {
         final IMocksControl control = (support == null ? EasyMock.createControl(type) : support
                 .createControl(type));
         return createMock(null, control);
     }
 
+    @Impure
     public T createMock(final String name, final MockType type) {
         final IMocksControl control = (support == null ? EasyMock.createControl(type) : support
                 .createControl(type));
         return createMock(name, control);
     }
 
+    @Impure
     public T createMock(final IMocksControl control) {
         return createMock(null, control);
     }
 
+    @Impure
     public T createMock() {
         return createMock((String) null);
     }
 
+    @Impure
     public T createNiceMock() {
         return createNiceMock(null);
     }
 
+    @Impure
     public T createStrictMock() {
         return createStrictMock(null);
     }
 
+    @Impure
     @SuppressWarnings("deprecation")
     public T createMock(final String name, final IMocksControl control) {
         final Method[] mockedMethodArray = (mockedMethods == null ? new Method[0] : mockedMethods
@@ -214,23 +237,27 @@ public class MockBuilder<T> implements IMockBuilder<T> {
         return control.createMock(name, toMock, constructorArgs, mockedMethodArray);
     }
 
+    @Impure
     public T createMock(final String name) {
         final IMocksControl control = (support == null ? EasyMock.createControl() : support.createControl());
         return createMock(name, control);
     }
 
+    @Impure
     public T createNiceMock(final String name) {
         final IMocksControl control = (support == null ? EasyMock.createNiceControl() : support
                 .createNiceControl());
         return createMock(name, control);
     }
 
+    @Impure
     public T createStrictMock(final String name) {
         final IMocksControl control = (support == null ? EasyMock.createStrictControl() : support
                 .createStrictControl());
         return createMock(name, control);
     }
 
+    @SideEffectFree
     private void checkConstructorNotInitialized() {
         if (constructor != null) {
             throw new IllegalStateException("Trying to define the constructor call more than once.");

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.easymock;
+import org.checkerframework.dataflow.qual.Impure;
 
 /**
  * Allows setting expectations for an associated expected invocation.
@@ -34,6 +35,7 @@ public interface IExpectationSetters<T> {
      *            the value to return.
      * @return this object to allow method call chaining.
      */
+    @Impure
     IExpectationSetters<T> andReturn(T value);
 
     /**
@@ -43,6 +45,7 @@ public interface IExpectationSetters<T> {
      *            the throwable to throw.
      * @return this object to allow method call chaining.
      */
+    @Impure
     IExpectationSetters<T> andThrow(Throwable throwable);
 
     /**
@@ -53,6 +56,7 @@ public interface IExpectationSetters<T> {
      *            the object used to answer the invocation.
      * @return this object to allow method call chaining.
      */
+    @Impure
     IExpectationSetters<T> andAnswer(IAnswer<? extends T> answer);
 
     /**
@@ -65,6 +69,7 @@ public interface IExpectationSetters<T> {
      *            the object the call is delegated to.
      * @return the value returned by the delegated call.
      */
+    @Impure
     IExpectationSetters<T> andDelegateTo(Object delegateTo);
 
     /**
@@ -74,6 +79,7 @@ public interface IExpectationSetters<T> {
      * @param value
      *            the value to return.
      */
+    @Impure
     void andStubReturn(T value);
 
     /**
@@ -82,6 +88,7 @@ public interface IExpectationSetters<T> {
      * @param throwable
      *            the throwable to throw.
      */
+    @Impure
     void andStubThrow(Throwable throwable);
 
     /**
@@ -91,6 +98,7 @@ public interface IExpectationSetters<T> {
      * @param answer
      *            the object used to answer the invocation.
      */
+    @Impure
     void andStubAnswer(IAnswer<? extends T> answer);
 
     /**
@@ -102,12 +110,14 @@ public interface IExpectationSetters<T> {
      * @param delegateTo
      *            the object the call is delegated to.
      */
+    @Impure
     void andStubDelegateTo(Object delegateTo);
 
     /**
      * Sets stub behavior for the expected invocation (this is needed for void
      * methods).
      */
+    @Impure
     void asStub();
 
     /**
@@ -117,6 +127,7 @@ public interface IExpectationSetters<T> {
      *            the number of invocations expected.
      * @return this object to allow method call chaining.
      */
+    @Impure
     IExpectationSetters<T> times(int count);
 
     /**
@@ -129,6 +140,7 @@ public interface IExpectationSetters<T> {
      *            the maximum number of invocations expected.
      * @return this object to allow method call chaining.
      */
+    @Impure
     IExpectationSetters<T> times(int min, int max);
 
     /**
@@ -136,6 +148,7 @@ public interface IExpectationSetters<T> {
      * 
      * @return this object to allow method call chaining.
      */
+    @Impure
     IExpectationSetters<T> once();
 
     /**
@@ -143,6 +156,7 @@ public interface IExpectationSetters<T> {
      * 
      * @return this object to allow method call chaining.
      */
+    @Impure
     IExpectationSetters<T> atLeastOnce();
 
     /**
@@ -150,5 +164,6 @@ public interface IExpectationSetters<T> {
      * 
      * @return this object to allow method call chaining.
      */
+    @Impure
     IExpectationSetters<T> anyTimes();
 }

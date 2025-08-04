@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -31,10 +33,12 @@ public class ReplayState implements IMocksControlState, Serializable {
 
     private final ReentrantLock lock = new ReentrantLock();
 
+    @SideEffectFree
     public ReplayState(final IMocksBehavior behavior) {
         this.behavior = behavior;
     }
 
+    @Impure
     public Object invoke(final Invocation invocation) throws Throwable {
 
         behavior.checkThreadSafety();
@@ -52,6 +56,7 @@ public class ReplayState implements IMocksControlState, Serializable {
         return invokeInner(invocation);
     }
 
+    @Impure
     private Object invokeInner(final Invocation invocation) throws Throwable {
         LastControl.pushCurrentInvocation(invocation);
         try {
@@ -69,87 +74,128 @@ public class ReplayState implements IMocksControlState, Serializable {
         }
     }
 
+    @Impure
     public void verify() {
         behavior.verify();
     }
 
+    @SideEffectFree
+    @Impure
     public void replay() {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void callback(final Runnable runnable) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void checkOrder(final boolean value) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void makeThreadSafe(final boolean threadSafe) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void checkIsUsedInOneThread(final boolean shouldBeUsedInOneThread) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void andReturn(final Object value) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void andThrow(final Throwable throwable) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void andAnswer(final IAnswer<?> answer) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void andDelegateTo(final Object answer) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void andStubReturn(final Object value) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void andStubThrow(final Throwable throwable) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void andStubAnswer(final IAnswer<?> answer) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void andStubDelegateTo(final Object delegateTo) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void asStub() {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void times(final Range range) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void setDefaultReturnValue(final Object value) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void setDefaultThrowable(final Throwable throwable) {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     public void setDefaultVoidCallable() {
         throwWrappedIllegalStateException();
     }
 
+    @SideEffectFree
+    @Impure
     private void throwWrappedIllegalStateException() {
         throw new RuntimeExceptionWrapper(new IllegalStateException(
                 "This method must not be called in replay state."));
     }
 
+    @SideEffectFree
+    @Impure
     public void assertRecordState() {
         throwWrappedIllegalStateException();
     }

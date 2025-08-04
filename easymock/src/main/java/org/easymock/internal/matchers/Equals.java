@@ -15,6 +15,9 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.IArgumentMatcher;
@@ -29,10 +32,12 @@ public class Equals implements IArgumentMatcher, Serializable {
 
     private final Object expected;
 
+    @SideEffectFree
     public Equals(final Object expected) {
         this.expected = expected;
     }
 
+    @Impure
     public boolean matches(final Object actual) {
         if (this.expected == null) {
             return actual == null;
@@ -40,14 +45,17 @@ public class Equals implements IArgumentMatcher, Serializable {
         return expected.equals(actual);
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         ArgumentToString.appendArgument(expected, buffer);
     }
 
+    @Pure
     protected final Object getExpected() {
         return expected;
     }
 
+    @Pure
     @Override
     public boolean equals(final Object o) {
         if (o == null || !this.getClass().equals(o.getClass())) {
@@ -58,6 +66,7 @@ public class Equals implements IArgumentMatcher, Serializable {
                 && this.expected.equals(other.expected);
     }
 
+    @Pure
     @Override
     public int hashCode() {
         throw new UnsupportedOperationException("hashCode() is not supported");

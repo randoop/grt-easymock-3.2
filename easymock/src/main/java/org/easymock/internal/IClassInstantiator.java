@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.easymock.internal;
+import org.checkerframework.dataflow.qual.Impure;
 
 /**
  * Used to instantiate a given class.
@@ -32,5 +33,6 @@ public interface IClassInstantiator {
      * @return new instance of clazz
      * @throws InstantiationException
      */
+    @Impure
     Object newInstance(Class<?> clazz) throws InstantiationException;
 }

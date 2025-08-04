@@ -15,6 +15,7 @@
  */
 package org.easymock;
 
+import org.checkerframework.dataflow.qual.Pure;
 import java.lang.annotation.*;
 
 /**
@@ -35,8 +36,10 @@ import java.lang.annotation.*;
 public @interface Mock {
 
     /** Type of mock to create */
+    @Pure
     MockType type() default MockType.DEFAULT;
 
     /** Name of the mock to be created */
+    @Pure
     String name() default "";
 }

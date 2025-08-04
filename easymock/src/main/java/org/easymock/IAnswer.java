@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.easymock;
+import org.checkerframework.dataflow.qual.Impure;
 
 /**
  * Used to answer expected calls.
@@ -36,5 +37,6 @@ public interface IAnswer<T> {
      * @throws Throwable
      *             the throwable to be thrown
      */
+    @Impure
     T answer() throws Throwable;
 }

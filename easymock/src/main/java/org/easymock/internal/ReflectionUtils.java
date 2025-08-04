@@ -15,6 +15,9 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -50,6 +53,7 @@ public final class ReflectionUtils {
     public static final Method OBJECT_FINALIZE = getDeclaredMethod(Object.class, "finalize", (Class[]) null);
 
     // ///CLOVER:OFF
+    @SideEffectFree
     private ReflectionUtils() {
     }
 
@@ -68,6 +72,7 @@ public final class ReflectionUtils {
      *            the name of the method
      * @return the Method object, or <code>null</code> if none found
      */
+    @Impure
     public static Method findMethod(final Class<?> clazz, final String name) {
         return findMethod(clazz, name, (Class<?>[]) null);
     }
@@ -88,6 +93,7 @@ public final class ReflectionUtils {
      *            indicate any signature)
      * @return the Method object, or <code>null</code> if none found
      */
+    @Impure
     public static Method findMethod(final Class<?> clazz, final String name, final Class<?>... paramTypes) {
         Class<?> searchType = clazz;
         while (searchType != null) {
@@ -141,6 +147,7 @@ public final class ReflectionUtils {
      *             when the constructor with {@code args} does not exist or is
      *             ambiguous
      */
+    @Impure
     @SuppressWarnings("unchecked")
     public static <T> Constructor<T> getConstructor(final Class<T> clazz, final Object... objs)
             throws NoSuchMethodException {
@@ -170,6 +177,7 @@ public final class ReflectionUtils {
      * Returns true if objects in {@code objs} are eligible to be passed to
      * {@code classConstructor}.
      */
+    @Impure
     private static boolean isMatchingConstructor(final Constructor<?> classConstructor, final Object... objs) {
 
         if (Modifier.isPrivate(classConstructor.getModifiers())) {
@@ -206,6 +214,7 @@ public final class ReflectionUtils {
      *            the primitive type
      * @return the boxed equivalent
      */
+    @Pure
     private static Class<?> wrapPrimitive(final Class<?> parameterType) {
         return primitiveToWrapperType.get(parameterType);
     }
@@ -222,6 +231,7 @@ public final class ReflectionUtils {
      *            method parameters
      * @return the method searched
      */
+    @Impure
     public static Method getDeclaredMethod(final Class<?> clazz, final String name,
             final Class<?>[] paramTypes) {
         try {

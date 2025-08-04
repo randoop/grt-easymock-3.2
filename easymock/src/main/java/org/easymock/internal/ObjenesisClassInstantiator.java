@@ -15,6 +15,7 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
 import org.objenesis.ObjenesisHelper;
 
 /**
@@ -22,6 +23,7 @@ import org.objenesis.ObjenesisHelper;
  */
 public class ObjenesisClassInstantiator implements IClassInstantiator {
 
+    @Impure
     public Object newInstance(final Class<?> clazz) throws InstantiationException {
         return ObjenesisHelper.newInstance(clazz);
     }

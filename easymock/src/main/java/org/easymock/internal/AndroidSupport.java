@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.easymock.internal;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Android-specific support.
@@ -30,6 +31,7 @@ public final class AndroidSupport {
         }
     }
 
+    @Pure
     public static boolean isAndroid() {
         return isAndroid;
     }

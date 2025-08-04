@@ -15,6 +15,8 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
@@ -29,14 +31,17 @@ public class Find implements IArgumentMatcher, Serializable {
 
     private final String regex;
 
+    @SideEffectFree
     public Find(final String regex) {
         this.regex = regex;
     }
 
+    @Impure
     public boolean matches(final Object actual) {
         return (actual instanceof String) && Pattern.compile(regex).matcher((String) actual).find();
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("find(\"" + regex.replaceAll("\\\\", "\\\\\\\\") + "\")");
     }

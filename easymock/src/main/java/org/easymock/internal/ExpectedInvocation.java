@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -35,11 +37,13 @@ public class ExpectedInvocation implements Serializable {
 
     private final List<IArgumentMatcher> matchers;
 
+    @Impure
     public ExpectedInvocation(final Invocation invocation, final List<IArgumentMatcher> matchers) {
         this.invocation = invocation;
         this.matchers = createMissingMatchers(invocation, matchers);
     }
 
+    @Impure
     private List<IArgumentMatcher> createMissingMatchers(final Invocation invocation,
             final List<IArgumentMatcher> matchers) {
         if (matchers != null) {
@@ -64,6 +68,7 @@ public class ExpectedInvocation implements Serializable {
         return result;
     }
 
+    @Pure
     @Override
     public boolean equals(final Object o) {
         if (o == null || !this.getClass().equals(o.getClass())) {
@@ -76,16 +81,19 @@ public class ExpectedInvocation implements Serializable {
                         .equals(other.matchers)));
     }
 
+    @Pure
     @Override
     public int hashCode() {
         throw new UnsupportedOperationException("hashCode() is not implemented");
     }
 
+    @Impure
     public boolean matches(final Invocation actual) {
         return this.invocation.getMock().equals(actual.getMock())
                 && this.invocation.getMethod().equals(actual.getMethod()) && matches(actual.getArguments());
     }
 
+    @Impure
     private boolean matches(final Object[] arguments) {
         if (arguments.length != matchers.size()) {
             return false;
@@ -98,6 +106,7 @@ public class ExpectedInvocation implements Serializable {
         return true;
     }
 
+    @Impure
     @Override
     public String toString() {
         final StringBuffer result = new StringBuffer();
@@ -113,6 +122,8 @@ public class ExpectedInvocation implements Serializable {
         return result.toString();
     }
 
+    @Pure
+    @Impure
     public Method getMethod() {
         return invocation.getMethod();
     }

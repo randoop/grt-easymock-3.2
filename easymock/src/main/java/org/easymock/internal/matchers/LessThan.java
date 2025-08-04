@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 package org.easymock.internal.matchers;
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
 
 /**
  * @param <T>
@@ -25,15 +28,19 @@ public class LessThan<T extends Comparable<T>> extends CompareTo<T> {
 
     private static final long serialVersionUID = 6004888476822043880L;
 
+    @SideEffectFree
+    @Impure
     public LessThan(final Comparable<T> value) {
         super(value);
     }
 
+    @Pure
     @Override
     protected String getName() {
         return "lt";
     }
 
+    @Pure
     @Override
     protected boolean matchResult(final int result) {
         return result < 0;

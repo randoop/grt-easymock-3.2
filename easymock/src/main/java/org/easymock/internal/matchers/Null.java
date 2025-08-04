@@ -15,6 +15,9 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.IArgumentMatcher;
@@ -28,13 +31,16 @@ public class Null implements IArgumentMatcher, Serializable {
 
     public static final Null NULL = new Null();
 
+    @SideEffectFree
     private Null() {
     }
 
+    @Pure
     public boolean matches(final Object actual) {
         return actual == null;
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("isNull()");
     }

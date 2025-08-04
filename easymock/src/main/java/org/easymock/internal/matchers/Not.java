@@ -15,6 +15,8 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.IArgumentMatcher;
@@ -28,14 +30,17 @@ public class Not implements IArgumentMatcher, Serializable {
 
     private final IArgumentMatcher first;
 
+    @SideEffectFree
     public Not(final IArgumentMatcher first) {
         this.first = first;
     }
 
+    @Impure
     public boolean matches(final Object actual) {
         return !first.matches(actual);
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("not(");
         first.appendTo(buffer);

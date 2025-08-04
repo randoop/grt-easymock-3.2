@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.easymock;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
 
 /**
  * See {@link EasyMock#cmp}
@@ -22,30 +24,35 @@ package org.easymock;
  */
 public enum LogicalOperator {
     LESS_THAN("<") {
+        @Pure
         @Override
         public boolean matchResult(final int result) {
             return result < 0;
         }
     },
     LESS_OR_EQUAL("<=") {
+        @Pure
         @Override
         public boolean matchResult(final int result) {
             return result <= 0;
         }
     },
     EQUAL("==") {
+        @Pure
         @Override
         public boolean matchResult(final int result) {
             return result == 0;
         }
     },
     GREATER_OR_EQUAL(">=") {
+        @Pure
         @Override
         public boolean matchResult(final int result) {
             return result >= 0;
         }
     },
     GREATER(">") {
+        @Pure
         @Override
         public boolean matchResult(final int result) {
             return result > 0;
@@ -54,13 +61,16 @@ public enum LogicalOperator {
 
     private String symbol;
 
+    @Impure
     private LogicalOperator(final String symbol) {
         this.symbol = symbol;
     }
 
+    @Pure
     public String getSymbol() {
         return symbol;
     }
 
+    @Pure
     public abstract boolean matchResult(int result);
 }

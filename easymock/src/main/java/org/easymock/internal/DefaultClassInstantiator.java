@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import java.io.*;
 import java.lang.reflect.*;
 
@@ -35,6 +37,7 @@ public class DefaultClassInstantiator implements IClassInstantiator {
      * @param c
      *            Class to instantiate
      */
+    @Impure
     public Object newInstance(final Class<?> c) throws InstantiationException {
 
         if (isSerializable(c)) {
@@ -71,6 +74,7 @@ public class DefaultClassInstantiator implements IClassInstantiator {
      *            Class to check
      * @return If the class is serializable
      */
+    @Pure
     private boolean isSerializable(final Class<?> clazz) {
         return Serializable.class.isAssignableFrom(clazz);
     }
@@ -84,6 +88,7 @@ public class DefaultClassInstantiator implements IClassInstantiator {
      *            Class in which constructor is searched
      * @return Constructor to use
      */
+    @Impure
     public Constructor<?> getConstructorToUse(final Class<?> clazz) {
         // First try to use the empty constructor
         try {
@@ -105,6 +110,7 @@ public class DefaultClassInstantiator implements IClassInstantiator {
      * @return Instances of methodTypes in order
      * @throws InstantiationException Thrown if the class instantiation fails
      */
+    @Impure
     public Object[] getArgsForTypes(final Class<?>[] methodTypes) throws InstantiationException {
         final Object[] methodArgs = new Object[methodTypes.length];
 
@@ -130,6 +136,7 @@ public class DefaultClassInstantiator implements IClassInstantiator {
         return methodArgs;
     }
 
+    @Impure
     private static byte[] getSerializedBytes(final Class<?> clazz) throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         final DataOutputStream data = new DataOutputStream(baos);
@@ -150,6 +157,7 @@ public class DefaultClassInstantiator implements IClassInstantiator {
         return baos.toByteArray();
     }
 
+    @Impure
     private static Long getSerializableUID(final Class<?> clazz) {
 
         try {
@@ -173,6 +181,7 @@ public class DefaultClassInstantiator implements IClassInstantiator {
         // ///CLOVER:ON
     }
 
+    @Impure
     private static Long callLongMethod(final Class<?> clazz, final String methodName) {
 
         Method method;
@@ -198,6 +207,7 @@ public class DefaultClassInstantiator implements IClassInstantiator {
         return suid;
     }
 
+    @Impure
     private static Object readObject(final byte[] bytes) throws IOException, ClassNotFoundException {
         final ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bytes));
         return in.readObject();

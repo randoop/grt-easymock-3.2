@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -56,10 +58,12 @@ public class ClassProxyFactory implements IProxyFactory {
 
         private transient Set<Method> mockedMethods;
 
+        @SideEffectFree
         public MockMethodInterceptor(final InvocationHandler handler) {
             this.handler = handler;
         }
 
+        @Impure
         public Object intercept(final Object obj, Method method, final Object[] args, final MethodProxy proxy)
                 throws Throwable {
 
@@ -97,10 +101,12 @@ public class ClassProxyFactory implements IProxyFactory {
             return handler.invoke(obj, method, args);
         }
 
+        @Impure
         public void setMockedMethods(final Method... mockedMethods) {
             this.mockedMethods = new HashSet<Method>(Arrays.asList(mockedMethods));
         }
 
+        @Impure
         @SuppressWarnings("unchecked")
         private void readObject(final java.io.ObjectInputStream stream) throws IOException,
                 ClassNotFoundException {
@@ -123,6 +129,7 @@ public class ClassProxyFactory implements IProxyFactory {
             }
         }
 
+        @Impure
         private void writeObject(final java.io.ObjectOutputStream stream) throws IOException {
             stream.defaultWriteObject();
 
@@ -143,6 +150,7 @@ public class ClassProxyFactory implements IProxyFactory {
 
     // ///CLOVER:OFF (I don't know how to test it automatically yet)
     private static final NamingPolicy ALLOWS_MOCKING_CLASSES_IN_SIGNED_PACKAGES = new DefaultNamingPolicy() {
+        @Impure
         @Override
         public String getClassName(final String prefix, final String source, final Object key,
                 final Predicate names) {
@@ -152,6 +160,7 @@ public class ClassProxyFactory implements IProxyFactory {
 
     // ///CLOVER:ON
 
+    @Impure
     public static boolean isCallerMockInvocationHandlerInvoke(final Throwable e) throws Throwable {
         final StackTraceElement[] elements = e.getStackTrace();
         return elements.length > 2
@@ -159,6 +168,7 @@ public class ClassProxyFactory implements IProxyFactory {
                 && elements[2].getMethodName().equals("invoke");
     }
 
+    @Impure
     @SuppressWarnings("unchecked")
     public <T> T createProxy(final Class<T> toMock, final InvocationHandler handler,
             final Method[] mockedMethods, final ConstructorArgs args) {
@@ -252,6 +262,7 @@ public class ClassProxyFactory implements IProxyFactory {
         }
     }
 
+    @Impure
     private Enhancer createEnhancer(final Class<?> toMock) {
         // Create the mock
         final Enhancer enhancer = new Enhancer() {
@@ -260,6 +271,7 @@ public class ClassProxyFactory implements IProxyFactory {
              * Filter all private constructors but do not check that there are
              * some left
              */
+            @Impure
             @SuppressWarnings("rawtypes")
             @Override
             protected void filterConstructors(final Class sc, final List constructors) {
@@ -278,6 +290,7 @@ public class ClassProxyFactory implements IProxyFactory {
         return enhancer;
     }
 
+    @Impure
     public InvocationHandler getInvocationHandler(final Object mock) {
         final Factory factory = (Factory) mock;
         return ((MockMethodInterceptor) factory.getCallback(0)).handler;

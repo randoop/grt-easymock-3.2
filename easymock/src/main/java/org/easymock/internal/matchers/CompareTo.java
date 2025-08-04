@@ -15,6 +15,9 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.IArgumentMatcher;
@@ -31,10 +34,13 @@ public abstract class CompareTo<T extends Comparable<T>> implements IArgumentMat
 
     private final Comparable<T> expected;
 
+    @SideEffectFree
     public CompareTo(final Comparable<T> value) {
         this.expected = value;
     }
 
+    @Pure
+    @Impure
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public boolean matches(final Object actual) {
 
@@ -45,11 +51,14 @@ public abstract class CompareTo<T extends Comparable<T>> implements IArgumentMat
         return matchResult(((Comparable) actual).compareTo(expected));
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append(getName() + "(" + expected + ")");
     }
 
+    @Pure
     protected abstract String getName();
 
+    @Pure
     protected abstract boolean matchResult(int result);
 }

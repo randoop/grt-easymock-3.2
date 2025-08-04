@@ -15,6 +15,9 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.IArgumentMatcher;
@@ -28,14 +31,17 @@ public final class Any implements IArgumentMatcher, Serializable {
 
     public static final Any ANY = new Any();
 
+    @SideEffectFree
     private Any() {
 
     }
 
+    @Pure
     public boolean matches(final Object actual) {
         return true;
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("<any>");
     }

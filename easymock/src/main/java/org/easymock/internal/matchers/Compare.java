@@ -15,6 +15,8 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -37,16 +39,19 @@ public class Compare<T> implements IArgumentMatcher, Serializable {
 
     private final LogicalOperator operator;
 
+    @SideEffectFree
     public Compare(final T expected, final Comparator<? super T> comparator, final LogicalOperator result) {
         this.expected = expected;
         this.comparator = comparator;
         this.operator = result;
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append(comparator + "(" + expected + ") " + operator.getSymbol() + " 0");
     }
 
+    @Impure
     @SuppressWarnings("unchecked")
     public boolean matches(final Object actual) {
         if (actual == null) {

@@ -15,6 +15,9 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.IArgumentMatcher;
@@ -30,17 +33,20 @@ public class EqualsWithDelta implements IArgumentMatcher, Serializable {
 
     private final Number delta;
 
+    @SideEffectFree
     public EqualsWithDelta(final Number value, final Number delta) {
         this.expected = value;
         this.delta = delta;
     }
 
+    @Pure
     public boolean matches(final Object actual) {
         final Number actualNumber = (Number) actual;
         return expected.doubleValue() - delta.doubleValue() <= actualNumber.doubleValue()
                 && actualNumber.doubleValue() <= expected.doubleValue() + delta.doubleValue();
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("eq(" + expected + ", " + delta + ")");
     }

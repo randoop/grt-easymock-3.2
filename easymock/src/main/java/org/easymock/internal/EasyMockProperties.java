@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +42,7 @@ public final class EasyMockProperties {
 
     private final Properties properties = new Properties();
 
+    @Impure
     public static EasyMockProperties getInstance() {
         if (instance == null) {
             synchronized (EasyMockProperties.class) {
@@ -53,10 +56,12 @@ public final class EasyMockProperties {
         return instance;
     }
 
+    @Impure
     private EasyMockProperties() {
         loadEasyMockProperties("easymock.properties");
     }
 
+    @Impure
     private void loadEasyMockProperties(final String propertyFileName) {
         InputStream in = getClassLoader().getResourceAsStream(propertyFileName);
         if (in != null) {
@@ -85,6 +90,7 @@ public final class EasyMockProperties {
      *            the value to be returned if the key isn't found
      * @return the value found for the key or the default value
      */
+    @Pure
     public String getProperty(final String key, final String defaultValue) {
         return properties.getProperty(key, defaultValue);
     }
@@ -97,6 +103,7 @@ public final class EasyMockProperties {
      *            key leading to the property
      * @return the value found for the key or null
      */
+    @Pure
     public String getProperty(final String key) {
         return properties.getProperty(key);
     }
@@ -111,6 +118,7 @@ public final class EasyMockProperties {
      *            the value corresponding to <tt>key</tt>.
      * @return the property previous value
      */
+    @Impure
     public String setProperty(final String key, final String value) {
         if (!key.startsWith(PREFIX)) {
             throw new IllegalArgumentException("Invalid key (" + key
@@ -122,6 +130,7 @@ public final class EasyMockProperties {
         return (String) properties.setProperty(key, value);
     }
 
+    @Impure
     private ClassLoader getClassLoader() {
         ClassLoader cl = null;
         try {

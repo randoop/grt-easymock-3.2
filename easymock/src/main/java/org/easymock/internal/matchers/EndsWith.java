@@ -15,6 +15,9 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.IArgumentMatcher;
@@ -28,14 +31,17 @@ public class EndsWith implements IArgumentMatcher, Serializable {
 
     private final String suffix;
 
+    @SideEffectFree
     public EndsWith(final String suffix) {
         this.suffix = suffix;
     }
 
+    @Pure
     public boolean matches(final Object actual) {
         return (actual instanceof String) && ((String) actual).endsWith(suffix);
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("endsWith(\"" + suffix + "\")");
     }

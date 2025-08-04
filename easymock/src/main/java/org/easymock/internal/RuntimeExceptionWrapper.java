@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.easymock.internal;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 
 /**
  * @author OFFIS, Tammo Freese
@@ -24,10 +26,12 @@ public class RuntimeExceptionWrapper extends RuntimeException {
 
     private final RuntimeException runtimeException;
 
+    @SideEffectFree
     public RuntimeExceptionWrapper(final RuntimeException runtimeException) {
         this.runtimeException = runtimeException;
     }
 
+    @Pure
     public RuntimeException getRuntimeException() {
         return runtimeException;
     }

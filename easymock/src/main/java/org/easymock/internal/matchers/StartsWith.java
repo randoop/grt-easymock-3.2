@@ -15,6 +15,9 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.IArgumentMatcher;
@@ -28,14 +31,17 @@ public class StartsWith implements IArgumentMatcher, Serializable {
 
     private final String prefix;
 
+    @SideEffectFree
     public StartsWith(final String prefix) {
         this.prefix = prefix;
     }
 
+    @Pure
     public boolean matches(final Object actual) {
         return (actual instanceof String) && ((String) actual).startsWith(prefix);
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("startsWith(\"" + prefix + "\")");
     }

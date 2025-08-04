@@ -15,6 +15,9 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -33,6 +36,7 @@ public class Results implements Serializable {
 
     private final List<Result> results = new ArrayList<Result>();
 
+    @Impure
     public void add(final Result result, final Range range) {
         if (!ranges.isEmpty()) {
             final Range lastRange = ranges.getLast();
@@ -45,6 +49,8 @@ public class Results implements Serializable {
         results.add(result);
     }
 
+    @Pure
+    @Impure
     public boolean hasResults() {
         int currentPosition = 0;
         for (int i = 0; i < ranges.size(); i++) {
@@ -60,6 +66,7 @@ public class Results implements Serializable {
         return false;
     }
 
+    @Impure
     public Result next() {
         int currentPosition = 0;
         for (int i = 0; i < ranges.size(); i++) {
@@ -77,15 +84,21 @@ public class Results implements Serializable {
         return null;
     }
 
+    @SideEffectFree
+    @Impure
     public boolean hasValidCallCount() {
         return getMainInterval().contains(getCallCount());
     }
 
+    @SideEffectFree
+    @Impure
     @Override
     public String toString() {
         return getMainInterval().expectedCount();
     }
 
+    @SideEffectFree
+    @Impure
     private Range getMainInterval() {
         int min = 0, max = 0;
 
@@ -101,6 +114,7 @@ public class Results implements Serializable {
         return new Range(min, max);
     }
 
+    @Pure
     public int getCallCount() {
         return callCount;
     }

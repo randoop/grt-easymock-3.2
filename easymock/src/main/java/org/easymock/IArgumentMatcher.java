@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.easymock;
+import org.checkerframework.dataflow.qual.Impure;
 
 /**
  * Decides whether an actual argument is accepted.
@@ -37,6 +38,7 @@ public interface IArgumentMatcher {
      *            the argument
      * @return whether this matcher accepts the given argument.
      */
+    @Impure
     boolean matches(Object argument);
 
     /**
@@ -47,5 +49,6 @@ public interface IArgumentMatcher {
      * @param buffer
      *            the buffer to which the string representation is appended.
      */
+    @Impure
     void appendTo(StringBuffer buffer);
 }

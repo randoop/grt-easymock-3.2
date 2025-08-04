@@ -15,6 +15,8 @@
  */
 package org.easymock;
 
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Impure;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -67,6 +69,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createStrictMock(final Class<T> toMock, final Method... mockedMethods) {
         return createStrictControl().createMock(toMock, mockedMethods);
@@ -89,6 +92,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createStrictMock(final String name, final Class<T> toMock, final Method... mockedMethods) {
         return createStrictControl().createMock(name, toMock, mockedMethods);
@@ -111,6 +115,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createStrictMock(final Class<T> toMock, final ConstructorArgs constructorArgs,
             final Method... mockedMethods) {
@@ -136,6 +141,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createStrictMock(final String name, final Class<T> toMock,
             final ConstructorArgs constructorArgs, final Method... mockedMethods) {
@@ -157,6 +163,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createMock(final Class<T> toMock, final Method... mockedMethods) {
         return createControl().createMock(toMock, mockedMethods);
@@ -179,6 +186,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createMock(final String name, final Class<T> toMock, final Method... mockedMethods) {
         return createControl().createMock(name, toMock, mockedMethods);
@@ -201,6 +209,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createMock(final Class<T> toMock, final ConstructorArgs constructorArgs,
             final Method... mockedMethods) {
@@ -226,6 +235,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createMock(final String name, final Class<T> toMock, final ConstructorArgs constructorArgs,
             final Method... mockedMethods) {
@@ -248,6 +258,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createNiceMock(final Class<T> toMock, final Method... mockedMethods) {
         return createNiceControl().createMock(toMock, mockedMethods);
@@ -271,6 +282,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createNiceMock(final String name, final Class<T> toMock, final Method... mockedMethods) {
         return createNiceControl().createMock(name, toMock, mockedMethods);
@@ -294,6 +306,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createNiceMock(final Class<T> toMock, final ConstructorArgs constructorArgs,
             final Method... mockedMethods) {
@@ -320,6 +333,7 @@ public class EasyMockSupport {
      * 
      * @deprecated Use {@link #createMockBuilder(Class)} instead
      */
+    @Impure
     @Deprecated
     public <T> T createNiceMock(final String name, final Class<T> toMock,
             final ConstructorArgs constructorArgs, final Method... mockedMethods) {
@@ -341,6 +355,7 @@ public class EasyMockSupport {
      * @throws IllegalArgumentException
      *             if the name is not a valid Java identifier.
      */
+    @Impure
     public <T> T createMock(final MockType type, final Class<T> toMock) {
         return createControl(type).createMock(toMock);
     }
@@ -362,6 +377,7 @@ public class EasyMockSupport {
      * @throws IllegalArgumentException
      *             if the name is not a valid Java identifier.
      */
+    @Impure
     public <T> T createMock(final String name, final MockType type, final Class<T> toMock) {
         return createControl(type).createMock(name, toMock);
     }
@@ -377,6 +393,7 @@ public class EasyMockSupport {
      *            implement.
      * @return the mock object.
      */
+    @Impure
     public <T> T createStrictMock(final Class<T> toMock) {
         return createStrictControl().createMock(toMock);
     }
@@ -396,6 +413,7 @@ public class EasyMockSupport {
      * @throws IllegalArgumentException
      *             if the name is not a valid Java identifier.
      */
+    @Impure
     public <T> T createStrictMock(final String name, final Class<T> toMock) {
         return createStrictControl().createMock(name, toMock);
     }
@@ -411,6 +429,7 @@ public class EasyMockSupport {
      *            implement.
      * @return the mock object.
      */
+    @Impure
     public <T> T createMock(final Class<T> toMock) {
         return createControl().createMock(toMock);
     }
@@ -431,6 +450,7 @@ public class EasyMockSupport {
      * @throws IllegalArgumentException
      *             if the name is not a valid Java identifier.
      */
+    @Impure
     public <T> T createMock(final String name, final Class<T> toMock) {
         return createControl().createMock(name, toMock);
     }
@@ -447,6 +467,7 @@ public class EasyMockSupport {
      *            implement.
      * @return the mock object.
      */
+    @Impure
     public <T> T createNiceMock(final Class<T> toMock) {
         return createNiceControl().createMock(toMock);
     }
@@ -468,6 +489,7 @@ public class EasyMockSupport {
      * @throws IllegalArgumentException
      *             if the name is not a valid Java identifier.
      */
+    @Impure
     public <T> T createNiceMock(final String name, final Class<T> toMock) {
         return createNiceControl().createMock(name, toMock);
     }
@@ -477,6 +499,7 @@ public class EasyMockSupport {
      * 
      * @return the control.
      */
+    @Impure
     public IMocksControl createStrictControl() {
         final IMocksControl ctrl = EasyMock.createStrictControl();
         controls.add(ctrl);
@@ -494,6 +517,8 @@ public class EasyMockSupport {
      *            implement.
      * @return a mock builder to create a partial mock
      */
+    @SideEffectFree
+    @Impure
     public <T> IMockBuilder<T> createMockBuilder(final Class<T> toMock) {
         return new MockBuilder<T>(toMock, this);
     }
@@ -505,6 +530,7 @@ public class EasyMockSupport {
      * @return the control.
      * @since 3.2
      */
+    @Impure
     public IMocksControl createControl(final MockType type) {
         final IMocksControl ctrl = EasyMock.createControl(type);
         controls.add(ctrl);
@@ -516,6 +542,7 @@ public class EasyMockSupport {
      * 
      * @return the control.
      */
+    @Impure
     public IMocksControl createControl() {
         return createControl(MockType.DEFAULT);
     }
@@ -527,6 +554,7 @@ public class EasyMockSupport {
      * 
      * @return the control.
      */
+    @Impure
     public IMocksControl createNiceControl() {
         final IMocksControl ctrl = EasyMock.createNiceControl();
         controls.add(ctrl);
@@ -538,6 +566,7 @@ public class EasyMockSupport {
      * mock objects) to replay mode. For details, see the EasyMock
      * documentation.
      */
+    @Impure
     public void replayAll() {
         for (final IMocksControl c : controls) {
             c.replay();
@@ -548,6 +577,7 @@ public class EasyMockSupport {
      * Resets all registered mock objects (more exactly: the controls of the
      * mock objects). For details, see the EasyMock documentation.
      */
+    @Impure
     public void resetAll() {
         for (final IMocksControl c : controls) {
             c.reset();
@@ -558,6 +588,7 @@ public class EasyMockSupport {
      * Verifies all registered mock objects (more exactly: the controls of the
      * mock objects).
      */
+    @Impure
     public void verifyAll() {
         for (final IMocksControl c : controls) {
             c.verify();
@@ -569,6 +600,7 @@ public class EasyMockSupport {
      * mock objects) and turn them to a mock with nice behavior. For details,
      * see the EasyMock documentation.
      */
+    @Impure
     public void resetAllToNice() {
         for (final IMocksControl c : controls) {
             c.resetToNice();
@@ -580,6 +612,7 @@ public class EasyMockSupport {
      * mock objects) and turn them to a mock with default behavior. For details,
      * see the EasyMock documentation.
      */
+    @Impure
     public void resetAllToDefault() {
         for (final IMocksControl c : controls) {
             c.resetToDefault();
@@ -591,6 +624,7 @@ public class EasyMockSupport {
      * mock objects) and turn them to a mock with strict behavior. For details,
      * see the EasyMock documentation.
      */
+    @Impure
     public void resetAllToStrict() {
         for (final IMocksControl c : controls) {
             c.resetToStrict();
@@ -615,6 +649,7 @@ public class EasyMockSupport {
      * @param obj the object on which to inject mocks
      * @since 3.2
      */
+    @Impure
     public static void injectMocks(final Object obj) {
         List<Field> injectMockFields = new ArrayList<Field>(1);
         List<Object> mocks = new ArrayList<Object>(5);
@@ -650,6 +685,7 @@ public class EasyMockSupport {
      * @param obj object being a instance of clazz
      * @param mocks list of possible mocks
      */
+    @Impure
     private static void injectMocksOnClass(Class<?> clazz, Object obj, List<Object> mocks) {
         final Field[] fields = clazz.getDeclaredFields();
         for (final Field f : fields) {
@@ -689,6 +725,7 @@ public class EasyMockSupport {
      * @param mocks output parameter where the created mocks are added
      * @param injectMockFields output parameter where the fields to inject are added
      */
+    @Impure
     private static void createMocksForAnnotations(Class<?> clazz, Object obj, List<Object> mocks, List<Field> injectMockFields) {
         final Field[] fields = clazz.getDeclaredFields();
         for (final Field f : fields) {

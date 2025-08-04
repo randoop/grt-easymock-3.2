@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Impure;
 import org.easymock.IAnswer;
 
 /**
@@ -22,37 +24,55 @@ import org.easymock.IAnswer;
  */
 public interface IMocksControlState {
 
+    @Impure
     Object invoke(Invocation invocation) throws Throwable;
 
+    @SideEffectFree
+    @Impure
     void assertRecordState();
 
+    @Impure
     void andReturn(Object value);
 
+    @Impure
     void andThrow(Throwable throwable);
 
+    @Impure
     void andAnswer(IAnswer<?> answer);
 
+    @Impure
     void andDelegateTo(Object answer);
 
+    @Impure
     void andStubReturn(Object value);
 
+    @Impure
     void andStubThrow(Throwable throwable);
 
+    @Impure
     void andStubAnswer(IAnswer<?> answer);
 
+    @Impure
     void andStubDelegateTo(Object delegateTo);
 
+    @Impure
     void asStub();
 
+    @Impure
     void times(Range range);
 
+    @Impure
     void checkOrder(boolean value);
 
+    @Impure
     void makeThreadSafe(boolean threadSafe);
 
+    @Impure
     void checkIsUsedInOneThread(boolean shouldBeUsedInOneThread);
 
+    @Impure
     void replay();
 
+    @Impure
     void verify();
 }

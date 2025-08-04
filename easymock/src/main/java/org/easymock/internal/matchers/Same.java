@@ -15,6 +15,9 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.IArgumentMatcher;
@@ -29,14 +32,17 @@ public class Same implements IArgumentMatcher, Serializable {
 
     private final Object expected;
 
+    @SideEffectFree
     public Same(final Object expected) {
         this.expected = expected;
     }
 
+    @Pure
     public boolean matches(final Object actual) {
         return expected == actual;
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("same(");
         ArgumentToString.appendArgument(expected, buffer);

@@ -15,6 +15,8 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.Capture;
@@ -35,24 +37,29 @@ public class Captures<T> implements IArgumentMatcher, Serializable {
 
     private T potentialValue;
 
+    @SideEffectFree
     public Captures(final Capture<T> captured) {
         this.capture = captured;
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("capture(").append(capture).append(")");
     }
 
+    @Impure
     public void setPotentialValue(final T potentialValue) {
         this.potentialValue = potentialValue;
     }
 
+    @Impure
     @SuppressWarnings("unchecked")
     public boolean matches(final Object actual) {
         LastControl.getCurrentInvocation().addCapture((Captures<Object>) this, actual);
         return true;
     }
 
+    @Impure
     public void validateCapture() {
         capture.setValue(potentialValue);
     }

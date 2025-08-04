@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 package org.easymock.internal;
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 
 /**
  * Factory returning a {@link IClassInstantiator}for the current JVM
@@ -25,6 +28,7 @@ public final class ClassInstantiatorFactory {
     private static IClassInstantiator instantiator = new ObjenesisClassInstantiator();
 
     // ///CLOVER:OFF
+    @SideEffectFree
     private ClassInstantiatorFactory() {
     }
 
@@ -35,6 +39,7 @@ public final class ClassInstantiatorFactory {
      * 
      * @return current JVM
      */
+    @Pure
     public static String getJVM() {
         return System.getProperty("java.vm.vendor");
     }
@@ -44,10 +49,13 @@ public final class ClassInstantiatorFactory {
      * 
      * @return current JVM specification version
      */
+    @Pure
     public static String getJVMSpecificationVersion() {
         return System.getProperty("java.specification.version");
     }
 
+    @Pure
+    @Impure
     public static boolean is1_3Specifications() {
         return getJVMSpecificationVersion().equals("1.3");
     }
@@ -57,6 +65,7 @@ public final class ClassInstantiatorFactory {
      * 
      * @return a class instantiator usable on the current JVM
      */
+    @Pure
     public static IClassInstantiator getInstantiator() {
         return instantiator;
     }
@@ -68,6 +77,7 @@ public final class ClassInstantiatorFactory {
      * @param i
      *            New instantiator
      */
+    @Impure
     public static void setInstantiator(final IClassInstantiator i) {
         instantiator = i;
     }
@@ -75,6 +85,7 @@ public final class ClassInstantiatorFactory {
     /**
      * Set back the default instantiator
      */
+    @Impure
     public static void setDefaultInstantiator() {
         instantiator = new ObjenesisClassInstantiator();
     }

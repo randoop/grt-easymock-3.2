@@ -15,6 +15,9 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Pure;
 import static java.lang.Character.*;
 
 import java.io.IOException;
@@ -43,12 +46,14 @@ public class Invocation implements Serializable {
 
     private final Collection<Captures<?>> currentCaptures = new ArrayList<Captures<?>>(0);
 
+    @Impure
     public Invocation(final Object mock, final Method method, final Object[] args) {
         this.mock = mock;
         this.method = method;
         this.arguments = expandVarArgs(method.isVarArgs(), args);
     }
 
+    @Impure
     private static Object[] expandVarArgs(final boolean isVarArgs, final Object[] args) {
         if (!isVarArgs) {
             return args == null ? NO_ARGS : args;
@@ -65,6 +70,7 @@ public class Invocation implements Serializable {
         return newArgs;
     }
 
+    @Impure
     private static Object[] createObjectArray(final Object array) {
         if (array instanceof Object[]) {
             return (Object[]) array;
@@ -76,18 +82,22 @@ public class Invocation implements Serializable {
         return result;
     }
 
+    @Pure
     public Object getMock() {
         return mock;
     }
 
+    @Pure
     public Method getMethod() {
         return method;
     }
 
+    @Pure
     public Object[] getArguments() {
         return arguments;
     }
 
+    @Impure
     @Override
     public boolean equals(final Object o) {
         if (o == null || !o.getClass().equals(this.getClass())) {
@@ -100,16 +110,19 @@ public class Invocation implements Serializable {
                 && this.equalArguments(other.arguments);
     }
 
+    @Pure
     @Override
     public int hashCode() {
         throw new UnsupportedOperationException("hashCode() is not implemented");
     }
 
+    @Impure
     @Override
     public String toString() {
         return getMockAndMethodName() + "(" + ArgumentToString.argumentsToString(arguments) + ")";
     }
 
+    @Impure
     private boolean equalArguments(final Object[] arguments) {
         if (this.arguments.length != arguments.length) {
             return false;
@@ -131,6 +144,7 @@ public class Invocation implements Serializable {
         return true;
     }
 
+    @Impure
     private boolean isPrimitiveParameter(int parameterPosition) {
         final Class<?>[] parameterTypes = method.getParameterTypes();
         if (method.isVarArgs()) {
@@ -139,6 +153,7 @@ public class Invocation implements Serializable {
         return parameterTypes[parameterPosition].isPrimitive();
     }
 
+    @Impure
     public String getMockAndMethodName() {
         final String methodName = method.getName();
         // This can occur when using PowerMock. They do something that causes the mock
@@ -158,17 +173,20 @@ public class Invocation implements Serializable {
         return clazz.getSimpleName() + "." + methodName;
     }
 
+    @Impure
     public void addCapture(final Captures<Object> capture, final Object value) {
         capture.setPotentialValue(value);
         currentCaptures.add(capture);
     }
 
+    @Impure
     public void validateCaptures() {
         for (final Captures<?> c : currentCaptures) {
             c.validateCapture();
         }
     }
 
+    @Impure
     public void clearCaptures() {
         for (final Captures<?> c : currentCaptures) {
             c.setPotentialValue(null);
@@ -176,6 +194,7 @@ public class Invocation implements Serializable {
         currentCaptures.clear();
     }
 
+    @Impure
     private boolean toStringIsDefined(final Object o) {
         try {
             o.getClass().getDeclaredMethod("toString", (Class[]) null).getModifiers();
@@ -191,6 +210,7 @@ public class Invocation implements Serializable {
         }
     }
 
+    @SideEffectFree
     public static boolean isJavaIdentifier(final String mockName) {
         if (mockName.length() == 0 || mockName.indexOf(' ') > -1
                 || !Character.isJavaIdentifierStart(mockName.charAt(0))) {
@@ -204,6 +224,7 @@ public class Invocation implements Serializable {
         return true;
     }
 
+    @Impure
     private void readObject(final java.io.ObjectInputStream stream) throws IOException,
             ClassNotFoundException {
         stream.defaultReadObject();
@@ -216,6 +237,7 @@ public class Invocation implements Serializable {
         }
     }
 
+    @Impure
     private void writeObject(final java.io.ObjectOutputStream stream) throws IOException {
         stream.defaultWriteObject();
         stream.writeObject(new MethodSerializationWrapper(method));

@@ -15,6 +15,7 @@
  */
 package org.easymock;
 
+import org.checkerframework.dataflow.qual.Impure;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
@@ -131,6 +132,7 @@ public interface IMockBuilder<T> {
      *            method to be mocked
      * @return this
      */
+    @Impure
     IMockBuilder<T> addMockedMethod(Method method);
 
     /**
@@ -146,6 +148,7 @@ public interface IMockBuilder<T> {
      *            name of the method to be mocked
      * @return this
      */
+    @Impure
     IMockBuilder<T> addMockedMethod(String methodName);
 
     /**
@@ -160,6 +163,7 @@ public interface IMockBuilder<T> {
      *            types of the parameters of the method
      * @return this
      */
+    @Impure
     IMockBuilder<T> addMockedMethod(String methodName, Class<?>... parameterTypes);
 
     /**
@@ -170,6 +174,7 @@ public interface IMockBuilder<T> {
      *            names of the methods to be mocked
      * @return this
      */
+    @Impure
     IMockBuilder<T> addMockedMethods(String... methodNames);
 
     /**
@@ -180,6 +185,7 @@ public interface IMockBuilder<T> {
      *            methods to be mocked
      * @return this
      */
+    @Impure
     IMockBuilder<T> addMockedMethods(Method... methods);
 
     /**
@@ -191,6 +197,7 @@ public interface IMockBuilder<T> {
      *            the constructor to be called
      * @return this
      */
+    @Impure
     IMockBuilder<T> withConstructor(Constructor<?> constructor);
 
     /**
@@ -198,6 +205,7 @@ public interface IMockBuilder<T> {
      * 
      * @return this
      */
+    @Impure
     IMockBuilder<T> withConstructor();
 
     /**
@@ -210,6 +218,7 @@ public interface IMockBuilder<T> {
      *            arguments of the constructor
      * @return this
      */
+    @Impure
     IMockBuilder<T> withConstructor(Object... initArgs);
 
     /**
@@ -221,6 +230,7 @@ public interface IMockBuilder<T> {
      *            the exact argument types of the constructor
      * @return this
      */
+    @Impure
     IMockBuilder<T> withConstructor(Class<?>... argTypes);
 
     /**
@@ -233,6 +243,7 @@ public interface IMockBuilder<T> {
      *            the arguments to pass to the constructor
      * @return this
      */
+    @Impure
     IMockBuilder<T> withArgs(Object... initArgs);
 
     /**
@@ -243,6 +254,7 @@ public interface IMockBuilder<T> {
      * @return the newly created mock
      * @since 3.2
      */
+    @Impure
     T createMock(MockType type);
 
     /**
@@ -251,6 +263,7 @@ public interface IMockBuilder<T> {
      * 
      * @return the newly created mock
      */
+    @Impure
     T createStrictMock();
 
     /**
@@ -259,6 +272,7 @@ public interface IMockBuilder<T> {
      * 
      * @return the newly created mock
      */
+    @Impure
     T createMock();
 
     /**
@@ -267,6 +281,7 @@ public interface IMockBuilder<T> {
      * 
      * @return the newly created mock
      */
+    @Impure
     T createNiceMock();
 
     /**
@@ -277,6 +292,7 @@ public interface IMockBuilder<T> {
      *            {@link org.easymock.IMocksControl} used to create the object
      * @return the newly created mock
      */
+    @Impure
     T createMock(IMocksControl control);
 
     /**
@@ -290,6 +306,7 @@ public interface IMockBuilder<T> {
      * @return the newly created mock
      * @since 3.2
      */
+    @Impure
     T createMock(String name, MockType type);
 
     /**
@@ -300,6 +317,7 @@ public interface IMockBuilder<T> {
      *            the mock name
      * @return the newly created mock
      */
+    @Impure
     T createStrictMock(String name);
 
     /**
@@ -310,6 +328,7 @@ public interface IMockBuilder<T> {
      *            the mock name
      * @return the newly created mock
      */
+    @Impure
     T createMock(String name);
 
     /**
@@ -320,6 +339,7 @@ public interface IMockBuilder<T> {
      *            the mock name
      * @return the newly created mock
      */
+    @Impure
     T createNiceMock(String name);
 
     /**
@@ -332,5 +352,6 @@ public interface IMockBuilder<T> {
      *            {@link org.easymock.IMocksControl} used to create the object
      * @return the newly created mock
      */
+    @Impure
     T createMock(String name, IMocksControl control);
 }

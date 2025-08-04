@@ -15,6 +15,7 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -34,6 +35,7 @@ public interface IProxyFactory {
      *     heuristics to choose a constructor.
      * @return the newly created proxy
      */
+    @Impure
     <T> T createProxy(Class<T> toMock, InvocationHandler handler, Method[] mockedMethods,
             ConstructorArgs constructorArgs);
 
@@ -43,5 +45,6 @@ public interface IProxyFactory {
      * @param mock a mock instance previously returned by {@code createProxy}.
      * @return the handler handling method calls for the {@code mock}
      */
+    @Impure
     InvocationHandler getInvocationHandler(Object mock);
 }

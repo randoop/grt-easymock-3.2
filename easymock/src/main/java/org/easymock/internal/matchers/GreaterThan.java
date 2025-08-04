@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 package org.easymock.internal.matchers;
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.Impure;
 
 /**
  * @param <T>
@@ -25,15 +28,19 @@ public class GreaterThan<T extends Comparable<T>> extends CompareTo<T> {
 
     private static final long serialVersionUID = 2736983121197045828L;
 
+    @SideEffectFree
+    @Impure
     public GreaterThan(final Comparable<T> value) {
         super(value);
     }
 
+    @Pure
     @Override
     protected String getName() {
         return "gt";
     }
 
+    @Pure
     @Override
     protected boolean matchResult(final int result) {
         return result > 0;

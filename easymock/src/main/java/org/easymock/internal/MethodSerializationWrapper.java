@@ -15,6 +15,7 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class MethodSerializationWrapper implements Serializable {
 
     private final String[] parameterTypeNames;
 
+    @Impure
     public MethodSerializationWrapper(final Method m) {
         className = m.getDeclaringClass().getName();
         methodName = m.getName();
@@ -59,6 +61,7 @@ public class MethodSerializationWrapper implements Serializable {
         }
     }
 
+    @Impure
     public Method getMethod() throws ClassNotFoundException, NoSuchMethodException {
         final Class<?> clazz = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
 

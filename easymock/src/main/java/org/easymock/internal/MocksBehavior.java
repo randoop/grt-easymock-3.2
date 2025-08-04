@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ public class MocksBehavior implements IMocksBehavior, Serializable {
 
     private transient volatile Thread lastThread;
 
+    @Impure
     public MocksBehavior(final boolean nice) {
         this.nice = nice;
         this.isThreadSafe = !Boolean.valueOf(EasyMockProperties.getInstance().getProperty(
@@ -52,15 +55,18 @@ public class MocksBehavior implements IMocksBehavior, Serializable {
                 EasyMock.ENABLE_THREAD_SAFETY_CHECK_BY_DEFAULT));
     }
 
+    @Impure
     public final void addStub(final ExpectedInvocation expected, final Result result) {
         stubResults.add(new ExpectedInvocationAndResult(expected, result));
     }
 
+    @Impure
     public void addExpected(final ExpectedInvocation expected, final Result result, final Range count) {
         addBehaviorListIfNecessary(expected);
         lastBehaviorList().addExpected(expected, result, count);
     }
 
+    @Impure
     private Result getStubResult(final Invocation actual) {
         for (final ExpectedInvocationAndResult each : stubResults) {
             if (each.getExpectedInvocation().matches(actual)) {
@@ -70,16 +76,19 @@ public class MocksBehavior implements IMocksBehavior, Serializable {
         return null;
     }
 
+    @Impure
     private void addBehaviorListIfNecessary(final ExpectedInvocation expected) {
         if (behaviorLists.isEmpty() || !lastBehaviorList().allowsExpectedInvocation(expected, checkOrder)) {
             behaviorLists.add(new UnorderedBehavior(checkOrder));
         }
     }
 
+    @Pure
     private UnorderedBehavior lastBehaviorList() {
         return behaviorLists.get(behaviorLists.size() - 1);
     }
 
+    @Impure
     public final Result addActual(final Invocation actual) {
         final int initialPosition = position;
 
@@ -148,6 +157,7 @@ public class MocksBehavior implements IMocksBehavior, Serializable {
         throw new AssertionErrorWrapper(new AssertionError(errorMessage));
     }
 
+    @Impure
     public void verify() {
         boolean verified = true;
 
@@ -173,22 +183,27 @@ public class MocksBehavior implements IMocksBehavior, Serializable {
         throw new AssertionErrorWrapper(new AssertionError(errorMessage.toString()));
     }
 
+    @Impure
     public void checkOrder(final boolean value) {
         this.checkOrder = value;
     }
 
+    @Impure
     public void makeThreadSafe(final boolean isThreadSafe) {
         this.isThreadSafe = isThreadSafe;
     }
 
+    @Impure
     public void shouldBeUsedInOneThread(final boolean shouldBeUsedInOneThread) {
         this.shouldBeUsedInOneThread = shouldBeUsedInOneThread;
     }
 
+    @Pure
     public boolean isThreadSafe() {
         return this.isThreadSafe;
     }
 
+    @Impure
     public void checkThreadSafety() {
         if (!shouldBeUsedInOneThread) {
             return;

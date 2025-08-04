@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,11 +41,13 @@ public final class LastControl {
     private static final ThreadLocal<Stack<IArgumentMatcher>> threadToArgumentMatcherStack = new ThreadLocal<Stack<IArgumentMatcher>>();
 
     // ///CLOVER:OFF
+    @SideEffectFree
     private LastControl() {
     }
 
     // ///CLOVER:ON
 
+    @Impure
     public static void reportLastControl(final MocksControl control) {
         if (control != null) {
             threadToControl.set(control);
@@ -52,10 +56,12 @@ public final class LastControl {
         }
     }
 
+    @Impure
     public static MocksControl lastControl() {
         return threadToControl.get();
     }
 
+    @Impure
     public static void reportMatcher(final IArgumentMatcher matcher) {
         Stack<IArgumentMatcher> stack = threadToArgumentMatcherStack.get();
         if (stack == null) {
@@ -65,6 +71,7 @@ public final class LastControl {
         stack.push(matcher);
     }
 
+    @Impure
     public static List<IArgumentMatcher> pullMatchers() {
         final Stack<IArgumentMatcher> stack = threadToArgumentMatcherStack.get();
         if (stack == null) {
@@ -74,18 +81,21 @@ public final class LastControl {
         return new ArrayList<IArgumentMatcher>(stack);
     }
 
+    @Impure
     public static void reportAnd(final int count) {
         final Stack<IArgumentMatcher> stack = threadToArgumentMatcherStack.get();
         assertState(stack != null, NO_MATCHERS_FOUND);
         stack.push(new And(popLastArgumentMatchers(count)));
     }
 
+    @Impure
     public static void reportNot() {
         final Stack<IArgumentMatcher> stack = threadToArgumentMatcherStack.get();
         assertState(stack != null, NO_MATCHERS_FOUND);
         stack.push(new Not(popLastArgumentMatchers(1).get(0)));
     }
 
+    @Impure
     private static List<IArgumentMatcher> popLastArgumentMatchers(final int count) {
         final Stack<IArgumentMatcher> stack = threadToArgumentMatcherStack.get();
         assertState(stack != null, NO_MATCHERS_FOUND);
@@ -98,6 +108,7 @@ public final class LastControl {
         return result;
     }
 
+    @Impure
     private static void assertState(final boolean toAssert, final String message) {
         if (!toAssert) {
             threadToArgumentMatcherStack.remove();
@@ -105,12 +116,14 @@ public final class LastControl {
         }
     }
 
+    @Impure
     public static void reportOr(final int count) {
         final Stack<IArgumentMatcher> stack = threadToArgumentMatcherStack.get();
         assertState(stack != null, NO_MATCHERS_FOUND);
         stack.push(new Or(popLastArgumentMatchers(count)));
     }
 
+    @Impure
     public static Invocation getCurrentInvocation() {
         final Stack<Invocation> stack = threadToCurrentInvocation.get();
         if (stack == null || stack.empty()) {
@@ -119,6 +132,7 @@ public final class LastControl {
         return stack.lastElement();
     }
 
+    @Impure
     public static void pushCurrentInvocation(final Invocation invocation) {
         Stack<Invocation> stack = threadToCurrentInvocation.get();
         if (stack == null) {
@@ -128,6 +142,7 @@ public final class LastControl {
         stack.push(invocation);
     }
 
+    @Impure
     public static void popCurrentInvocation() {
         final Stack<Invocation> stack = threadToCurrentInvocation.get();
         stack.pop();

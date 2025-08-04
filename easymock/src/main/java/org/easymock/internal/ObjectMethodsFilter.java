@@ -15,6 +15,8 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
@@ -40,6 +42,7 @@ public class ObjectMethodsFilter implements InvocationHandler, Serializable {
 
     private final String name;
 
+    @Impure
     public ObjectMethodsFilter(final Class<?> toMock, final MockInvocationHandler delegate, final String name) {
         if (name != null && !Invocation.isJavaIdentifier(name)) {
             throw new IllegalArgumentException(String.format("'%s' is not a valid Java identifier.", name));
@@ -68,6 +71,7 @@ public class ObjectMethodsFilter implements InvocationHandler, Serializable {
         this.name = name;
     }
 
+    @Impure
     private static Method extractMethod(Class<?> toMock, String name, Class<?>... params) throws NoSuchMethodException {
         Method m = toMock.getMethod(name, params);
         // It can occur that the method was bridged. Usually, this means the method was in package scope on a parent class
@@ -78,6 +82,7 @@ public class ObjectMethodsFilter implements InvocationHandler, Serializable {
         return m;
     }
 
+    @Impure
     public final Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         if (equalsMethod.equals(method)) {
             return Boolean.valueOf(proxy == args[0]);
@@ -94,14 +99,17 @@ public class ObjectMethodsFilter implements InvocationHandler, Serializable {
         return delegate.invoke(proxy, method, args);
     }
 
+    @Impure
     private String mockToString(final Object proxy) {
         return (name != null) ? name : "EasyMock for " + MocksControl.getMockedType(proxy);
     }
 
+    @Pure
     public MockInvocationHandler getDelegate() {
         return delegate;
     }
 
+    @Impure
     private void readObject(final java.io.ObjectInputStream stream) throws IOException,
             ClassNotFoundException {
         stream.defaultReadObject();
@@ -117,6 +125,7 @@ public class ObjectMethodsFilter implements InvocationHandler, Serializable {
         }
     }
 
+    @Impure
     private void writeObject(final java.io.ObjectOutputStream stream) throws IOException {
         stream.defaultWriteObject();
         stream.writeObject(new MethodSerializationWrapper(toStringMethod));

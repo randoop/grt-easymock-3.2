@@ -15,6 +15,9 @@
  */
 package org.easymock;
 
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +42,8 @@ public class Capture<T> implements Serializable {
     /**
      * Default constructor. Only the last element will be captured
      */
+    @SideEffectFree
+    @Impure
     public Capture() {
         this(CaptureType.LAST);
     }
@@ -49,6 +54,7 @@ public class Capture<T> implements Serializable {
      * @param type
      *            capture type
      */
+    @SideEffectFree
     public Capture(final CaptureType type) {
         this.type = type;
     }
@@ -56,6 +62,7 @@ public class Capture<T> implements Serializable {
     /**
      * Will reset capture to a "nothing captured yet" state
      */
+    @Impure
     public void reset() {
         values.clear();
     }
@@ -63,6 +70,7 @@ public class Capture<T> implements Serializable {
     /**
      * @return true if something was captured
      */
+    @Pure
     public boolean hasCaptured() {
         return !values.isEmpty();
     }
@@ -75,6 +83,8 @@ public class Capture<T> implements Serializable {
      *             captured
      * @return The last captured value
      */
+    @Pure
+    @Impure
     public T getValue() {
         if (values.isEmpty()) {
             throw new AssertionError("Nothing captured yet");
@@ -91,6 +101,7 @@ public class Capture<T> implements Serializable {
      * 
      * @return The currently captured values
      */
+    @Pure
     public List<T> getValues() {
         return values;
     }
@@ -101,6 +112,7 @@ public class Capture<T> implements Serializable {
      * @param value
      *            Value captured
      */
+    @Impure
     public void setValue(final T value) {
         switch (type) {
         case NONE:
@@ -126,6 +138,7 @@ public class Capture<T> implements Serializable {
         }
     }
 
+    @SideEffectFree
     @Override
     public String toString() {
         if (values.isEmpty()) {

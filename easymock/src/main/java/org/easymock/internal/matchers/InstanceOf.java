@@ -15,6 +15,9 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import java.io.Serializable;
 
 import org.easymock.IArgumentMatcher;
@@ -28,14 +31,17 @@ public class InstanceOf implements IArgumentMatcher, Serializable {
 
     private final Class<?> clazz;
 
+    @SideEffectFree
     public InstanceOf(final Class<?> clazz) {
         this.clazz = clazz;
     }
 
+    @Pure
     public boolean matches(final Object actual) {
         return (actual != null) && clazz.isAssignableFrom(actual.getClass());
     }
 
+    @Impure
     public void appendTo(final StringBuffer buffer) {
         buffer.append("isA(" + clazz.getName() + ")");
     }

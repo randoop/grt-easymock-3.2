@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.easymock.internal;
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * @author OFFIS, Tammo Freese
@@ -21,23 +23,32 @@ package org.easymock.internal;
 public interface IMocksBehavior {
 
     // record
+    @Impure
     void addExpected(ExpectedInvocation expected, Result result, Range count);
 
+    @Impure
     void addStub(ExpectedInvocation expected, Result result);
 
+    @Impure
     void checkOrder(boolean value);
 
+    @Impure
     void makeThreadSafe(boolean isThreadSafe);
 
+    @Impure
     void shouldBeUsedInOneThread(boolean shouldBeUsedInOneThread);
 
     // replay
+    @Impure
     Result addActual(Invocation invocation);
 
+    @Pure
     boolean isThreadSafe();
 
+    @Impure
     void checkThreadSafety();
 
     // verify
+    @Impure
     void verify();
 }

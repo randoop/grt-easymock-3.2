@@ -15,6 +15,7 @@
  */
 package org.easymock;
 
+import org.checkerframework.dataflow.qual.Impure;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -28,10 +29,12 @@ import org.junit.runners.model.Statement;
  */
 public class EasyMockRunner extends BlockJUnit4ClassRunner {
 
+    @Impure
     public EasyMockRunner(final Class<?> klass) throws InitializationError {
         super(klass);
     }
 
+    @Impure
     @Override
     protected Statement methodInvoker(final FrameworkMethod method, final Object test) {
         return new EasyMockStatement(super.methodInvoker(method, test), test);
@@ -45,11 +48,13 @@ class EasyMockStatement extends Statement {
 
     private final Object test;
 
+    @Impure
     public EasyMockStatement(final Statement originalStatement, final Object test) {
         this.originalStatement = originalStatement;
         this.test = test;
     }
 
+    @Impure
     @Override
     public void evaluate() throws Throwable {
         EasyMockSupport.injectMocks(test);

@@ -15,6 +15,8 @@
  */
 package org.easymock.internal.matchers;
 
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Impure;
 import java.util.Arrays;
 
 import org.easymock.internal.ArgumentToString;
@@ -26,10 +28,13 @@ public class ArrayEquals extends Equals {
 
     private static final long serialVersionUID = 1L;
 
+    @SideEffectFree
+    @Impure
     public ArrayEquals(final Object expected) {
         super(expected);
     }
 
+    @Impure
     @Override
     public boolean matches(final Object actual) {
         final Object expected = getExpected();
@@ -56,6 +61,7 @@ public class ArrayEquals extends Equals {
         }
     }
 
+    @Impure
     @Override
     public void appendTo(final StringBuffer buffer) {
         ArgumentToString.appendArgument(getExpected(), buffer);

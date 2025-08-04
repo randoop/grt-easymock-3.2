@@ -15,6 +15,9 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.dataflow.qual.Impure;
 import java.io.Serializable;
 
 /**
@@ -28,10 +31,14 @@ public class Range implements Serializable {
 
     private final int maximum;
 
+    @SideEffectFree
+    @Impure
     public Range(final int count) {
         this(count, count);
     }
 
+    @SideEffectFree
+    @Impure
     public Range(final int minimum, final int maximum) {
         if (!(minimum <= maximum)) {
             throw new RuntimeExceptionWrapper(new IllegalArgumentException("minimum must be <= maximum"));
@@ -48,18 +55,23 @@ public class Range implements Serializable {
         this.maximum = maximum;
     }
 
+    @Pure
     public boolean hasFixedCount() {
         return minimum == maximum;
     }
 
+    @Pure
     public int getMaximum() {
         return maximum;
     }
 
+    @Pure
     public int getMinimum() {
         return minimum;
     }
 
+    @Pure
+    @Impure
     @Override
     public String toString() {
         if (hasFixedCount()) {
@@ -71,14 +83,18 @@ public class Range implements Serializable {
         }
     }
 
+    @Pure
+    @SideEffectFree
     public String expectedCount() {
         return "expected: " + this.toString();
     }
 
+    @Pure
     public boolean contains(final int count) {
         return minimum <= count && count <= maximum;
     }
 
+    @Pure
     public boolean hasOpenCount() {
         return maximum == Integer.MAX_VALUE;
     }

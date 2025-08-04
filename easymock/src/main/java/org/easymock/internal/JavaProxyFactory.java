@@ -15,6 +15,7 @@
  */
 package org.easymock.internal;
 
+import org.checkerframework.dataflow.qual.Impure;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -24,12 +25,14 @@ import org.easymock.ConstructorArgs;
  * @author OFFIS, Tammo Freese
  */
 public class JavaProxyFactory implements IProxyFactory {
+    @Impure
     @SuppressWarnings("unchecked")
     public <T> T createProxy(Class<T> toMock, InvocationHandler handler,
             Method[] mockedMethods, ConstructorArgs constructorArgs) {
         return (T) Proxy.newProxyInstance(toMock.getClassLoader(), new Class[] { toMock }, handler);
     }
 
+    @Impure
     public InvocationHandler getInvocationHandler(Object mock) {
         return Proxy.getInvocationHandler(mock);
     }

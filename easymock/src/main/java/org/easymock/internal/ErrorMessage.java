@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 package org.easymock.internal;
+import org.checkerframework.dataflow.qual.Impure;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 
 /**
  * @author OFFIS, Tammo Freese
@@ -26,24 +29,29 @@ public class ErrorMessage {
 
     private final int actualCount;
 
+    @SideEffectFree
     public ErrorMessage(final boolean matching, final String message, final int actualCount) {
         this.matching = matching;
         this.message = message;
         this.actualCount = actualCount;
     }
 
+    @Pure
     public boolean isMatching() {
         return matching;
     }
 
+    @Pure
     public String getMessage() {
         return message;
     }
 
+    @Pure
     public int getActualCount() {
         return actualCount;
     }
 
+    @Impure
     public void appendTo(final StringBuilder buffer, final int matches) {
         buffer.append("\n    ").append(message).append(", actual: ");
         if (matching) {
